@@ -112,3 +112,11 @@ crashlytics-build.properties
 # oldboy capture
 original/
 detect/
+
+# oldboy learndata
+test.csv
+training.csv
+X.pickle
+y.pickle
+net.pickle
+net_epoch_backup.pickle
