@@ -114,6 +114,8 @@ original/
 detect/
 
 # oldboy learndata
+net1.pickle
+test.pickle
 test.csv
 training.csv
 X.pickle
