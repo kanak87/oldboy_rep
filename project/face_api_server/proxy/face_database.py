@@ -18,7 +18,7 @@ class FaceDatabase(object):
             self.users = []
 
     def find_user_by_index(self, index):
-        return self.people[index]
+        return self.users[index]
 
     def find_user_by_name(self, name):
         for user in self.users:

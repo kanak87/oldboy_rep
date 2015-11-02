@@ -125,13 +125,15 @@ class FaceService(object):
                 results.append(identity, bb, 1)
             else:
                 rep = self.net.forwardImage(alignedFace)
-                if self.svm:
+                if self.svm is not None:
                     # self.svm.predict(rep)
                     result_proba_list = self.svm.predict_proba(rep)
                     identity = np.argmax(result_proba_list[0])
                     # threshold = 0.8
                     threshold = 0.3
                     if result_proba_list[0][identity] > threshold:
-                        results.append((identity, bb, result_proba_list[identity]))
+                        results.append((identity, bb, result_proba_list[0][identity]))
+                    else:
+                        results.append((-1, bb, 0.0))
 
         return results
