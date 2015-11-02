@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Image Upload Form</title>
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+
+</head>
+
+<body>
+    <form method="post" id="files" name="files" enctype="multipart/form-data" onsubmit="return submitForm();">
+        <label>Select a file:</label><br>
+        <input type="file" name="file[]" multiple />
+        <input type="submit" value="Upload" />
+    </form>
+    <div id="output"></div>
+    <script type="text/javascript">
+        function submitForm() {
+            console.log("submit event");
+            var fd = new FormData(document.getElementById("files"));
+            fd.append("data", '{ "name" : "jung" }');
+
+            $.ajax({
+              url: "http://127.0.0.1:20100/request_register_face",
+              type: "POST",
+              data: fd,
+              enctype: 'multipart/form-data',
+              processData: false,  // tell jQuery not to process the data
+              contentType: false   // tell jQuery not to set contentType
+            }).done(function( data ) {
+                console.log("PHP Output:");
+                console.log( data );
+            });
+            return false;
+        }
+    </script>
+</body>
+</html>
