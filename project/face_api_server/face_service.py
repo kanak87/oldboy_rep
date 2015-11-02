@@ -34,7 +34,7 @@ class Face:
 
 
 class FaceService(object):
-    def __init__(self, detectStreamService):
+    def __init__(self):
         self.align = NaiveDlib(os.path.join(dlibModelDir, "mean.csv"),
                                os.path.join(dlibModelDir, "shape_predictor_68_face_landmarks.dat"))
         self.net = openface.TorchWrap(os.path.join(openfaceModelDir, 'nn4.v1.t7'),
@@ -44,11 +44,6 @@ class FaceService(object):
             self.trained_images = pickle.load(open('trained_images.pickle', 'rb'))
         else:
             self.trained_images = {}
-
-        if os.path.exists("people.pickle"):
-            self.people = pickle.load(open('people.pickle', 'rb'))
-        else:
-            self.people = []
 
         if os.path.exists("svm.pickle"):
             self.svm = pickle.load(open('svm.pickle', 'rb'))
@@ -62,14 +57,11 @@ class FaceService(object):
             ]
             self.svm = GridSearchCV(SVC(C=1, probability=True), param_grid, cv=5)
 
-    def training(self, name, images):
+    def training(self, identity, images):
         X = []
         y = []
 
-        try:
-            identity = self.people.index(name)
-        except Exception as e:
-            identity = len(self.people)
+        training_result = []
 
         for img in self.trained_images.values():
             X.append(img.rep)
@@ -79,18 +71,20 @@ class FaceService(object):
             bbs = self.align.getAllFaceBoundingBoxes(image)
 
             if len(bbs) is not 1:
+                training_result.append('0 or many people in image')
                 continue
-                #raise Exception('0 or many people in image')
+                # raise Exception('0 or many people in image')
 
             bb = bbs[0]
             alignedFace = self.align.alignImg("affine", 96, image, bb)
             if alignedFace is None:
+                training_result.append('not exist face in image')
                 continue
-                #raise Exception('not exist face in image')
 
             phash = str(imagehash.phash(Image.fromarray(alignedFace)))
             if phash in self.trained_images:
                 rep = self.trained_images[phash].rep
+                training_result.append('already trained')
             else:
                 rep = self.net.forwardImage(alignedFace)
                 self.trained_images[phash] = Face(rep, identity)
@@ -98,24 +92,19 @@ class FaceService(object):
                 X.append(rep)
                 y.append(identity)
 
-        self.people.append(name)
+                training_result.append(0)
 
-        param_grid = [
-            {'C': [1, 10, 100, 1000],
-             'kernel': ['linear']},
-            {'C': [1, 10, 100, 1000],
-             'gamma': [0.001, 0.0001],
-             'kernel': ['rbf']}
-        ]
-
-        if len(self.people) > 1:
+        if identity > 0:
+            param_grid = [
+                {'C': [1, 10, 100, 1000],
+                 'kernel': ['linear']},
+                {'C': [1, 10, 100, 1000],
+                 'gamma': [0.001, 0.0001],
+                 'kernel': ['rbf']}
+            ]
             self.svm = GridSearchCV(SVC(C=1, probability=True), param_grid, cv=5).fit(X, y)
 
-            pickle.dump(self.svm, open('svm.pickle', 'wb'), -1)
-            pickle.dump(self.trained_images, open('trained_images.pickle', 'wb'), -1)
-            pickle.dump(self.people, open('people.pickle', 'wb'), -1)
-
-        return identity
+        return training_result
 
     def predict(self, image):
         if len(self.trained_images) < 2:
@@ -131,19 +120,18 @@ class FaceService(object):
                 continue
 
             phash = str(imagehash.phash(Image.fromarray(alignedFace)))
-            identity = None
             if phash in self.trained_images:
                 identity = self.trained_images[phash].identity
-                results.append((self.faces[identity], bb, 1))
+                results.append(identity, bb, 1)
             else:
                 rep = self.net.forwardImage(alignedFace)
                 if self.svm:
-                    #self.svm.predict(rep)
+                    # self.svm.predict(rep)
                     result_proba_list = self.svm.predict_proba(rep)
-                    max_index = np.argmax(result_proba_list[0])
-                    #threshold = 0.8
-                    threshold = 0.6
-                    if result_proba_list[0][max_index] > threshold:
-                        results.append((self.faces[identity], bb, result_proba_list[max_index]))
+                    identity = np.argmax(result_proba_list[0])
+                    # threshold = 0.8
+                    threshold = 0.3
+                    if result_proba_list[0][identity] > threshold:
+                        results.append((identity, bb, result_proba_list[identity]))
 
         return results
