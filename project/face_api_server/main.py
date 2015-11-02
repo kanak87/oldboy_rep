@@ -7,7 +7,7 @@ from flask.ext.cors import cross_origin
 
 from werkzeug.utils import secure_filename
 
-from face_api_server.proxy.face_database import FaceDatabase
+from proxy.face_database import FaceDatabase
 from face_service import FaceService
 from util import *
 
