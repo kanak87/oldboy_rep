@@ -1,91 +1,14 @@
-import os
-import sys
-
-fileDir = os.path.dirname(os.path.realpath(__file__))
-sys.path.append(os.path.join(fileDir, ".."))
-
-import base64
 import json
-import StringIO
-from flask import Flask, request
-import argparse
-import cv2
-import imagehash
-import json
-from PIL import Image
-import numpy as np
 import os
-import StringIO
-import urllib
-import base64
 
-from sklearn.decomposition import PCA
-from sklearn.grid_search import GridSearchCV
-from sklearn.manifold import TSNE
-from sklearn.svm import SVC
+from flask import Flask, request, send_from_directory
+from werkzeug.utils import secure_filename
 
-import matplotlib.pyplot as plt
-import matplotlib.cm as cm
-
-modelDir = os.path.join(fileDir, "..", 'models')
-dlibModelDir = os.path.join(modelDir, 'dlib')
-openfaceModelDir = os.path.join(modelDir, 'openface')
-sys.path.append(openfaceModelDir)
-
-os.path.expanduser("~/src/dlib-18.16/python_examples")
-
-import dlib
-import openface
-from openface.alignment import NaiveDlib
+from face_service import FaceService
+from detect_stream_service import DetectionWebSocket
+from util import *
 
 app = Flask(__name__)
-
-
-
-class Face:
-
-    def __init__(self, rep, identity):
-        self.rep = rep
-        self.identity = identity
-
-    def __repr__(self):
-        return "{{id: {}, rep[0:5]: {}}}".format(
-            str(self.identity),
-            self.rep[0:5]
-        )
-
-
-class FaceService(object):
-    def __init__(self):
-        self.align = NaiveDlib(os.path.join(dlibModelDir, "mean.csv"),
-                               os.path.join(dlibModelDir, "shape_predictor_68_face_landmarks.dat"))
-        self.net = openface.TorchWrap(os.path.join(openfaceModelDir, 'nn4.v1.t7'),
-                                      imgDim=96, cuda=False)
-        self.images = { }
-        self.people = []
-        self.svm = None
-
-    def get_face_id(self, string_img, width, height):
-        head = "data:image/jpeg;base64,"
-        assert (string_img.startswith(head))
-
-        imgdata = base64.b64decode(string_img[len(head):])
-        imgF = StringIO.StringIO()
-        imgF.write(imgdata)
-        imgF.seek(0)
-        img = Image.open(imgF)
-
-        buf = np.fliplr(np.asarray(img))
-        rgbFrame = np.zeros((height, width, 3), dtype=np.uint8)
-        rgbFrame[:, :, 0] = buf[:, :, 2]
-        rgbFrame[:, :, 1] = buf[:, :, 1]
-        rgbFrame[:, :, 2] = buf[:, :, 0]
-
-        identities = []
-        bbs = self.align.getAllFaceBoundingBoxes(rgbFrame)
-
-
-faceService = FaceService()
 
 
 @app.route("/")
@@ -93,13 +16,121 @@ def hello():
     return "Hello World!"
 
 
-@app.route("/request_face_dectection", methods=['POST'])
+@app.route("/request_data", methods=['POST'])
+def request_data():
+    if request.form['data']:
+        print request.form['data']
+    try:
+        device_ids = [1, 2, 3]
+
+        result = {"reuslt": "0",
+                  "device_ids": device_ids,
+                  "faces": faces}
+
+    except Exception as e:
+        print e.message
+        result = {"result": "-1",
+                  "message": e.message}
+
+    return json.dumps(result)
+
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1] in app.config['ALLOWED_EXTENSIONS']
+
+
+app.config['UPLOAD_FOLDER'] = './thumbnails/'
+app.config['ALLOWED_EXTENSIONS'] = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
+
+
+@app.route("/request_register_face", methods=['POST'])
+def request_register_face():
+    try:
+        data = json.loads(request.form['data'])
+        name = data['name']
+
+        uploaded_files = request.files.getlist("file[]")
+        if len(uploaded_files) < 1:
+            raise Exception("upload file error")
+
+        images = []
+
+        is_first_file = True
+        save_file_name = ""
+        for file in uploaded_files:
+            if file and allowed_file(file.filename):
+                images.append(stream_to_image(file))
+
+                if is_first_file is True:
+                    file.seek(0)
+                    filename = secure_filename(file.filename)
+                    save_file_name = name + filename[-4:]
+                    save_file_name = os.path.join(app.config['UPLOAD_FOLDER'], save_file_name)
+                    file.save(save_file_name)
+                    is_first_file = False
+
+        identity = faceService.training(name, images)
+
+        result = {
+            "result": "0",
+            "face": {
+                "id": identity,
+                "name": name,
+                "thumbnail": save_file_name
+            }
+        }
+
+    except Exception as e:
+        print e.message
+        result = {"result": "-1",
+                  "message": e.message}
+
+    return json.dumps(result)
+
+
+@app.route('/thumbnails/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
+
+@app.route('/request_face_detection')
 def request_face_detection():
     try:
-        if request.form['data']:
-            print request.form['data']
-
+        result = {"result": "0"}
         data = json.loads(request.form['data'])
-        print data
-.''
-        face_id = faceSe=-wertyzxcvbnm,
+        device_id = data['device_id']
+        image = string_to_image(data['img'])
+
+        detected_faces = faceService.predict(image)
+
+        # results.append((self.faces[identity], bb, result_proba_list[max_index]))
+
+        result['detected_faces'] = []
+        for face in detected_faces:
+            detected_entity = {
+                "id": face[0],
+                "name": faceService.people[face[0]],
+                "probability" : face[2],
+                "boundingbox" : face[1],
+                "thumbnail": "/thumbnails/jung.png"
+            }
+            result['detected_faces'].append(detected_entity)
+
+    except Exception as e:
+        print e.message
+        result = {"result": "-1",
+                  "message": e.message}
+
+    return json.dumps(result)
+
+
+if __name__ == "__main__":
+    print "## init websocket"
+    detectStreamService = DetectionWebSocket()
+
+    print "## init face service"
+    faceService = FaceService(detectStreamService)
+
+    print "## server start"
+    app.run(host="0.0.0.0", port=20100, debug=True)

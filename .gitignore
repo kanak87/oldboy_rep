@@ -122,3 +122,12 @@ X.pickle
 y.pickle
 net.pickle
 net_epoch_backup.pickle
+
+# face
+mean.csv
+std.csv
+shape_predictor_68_face_landmarks.dat
+celeb-classifier.nn4.v1.pkl
+nn2.def.lua
+nn4.def.lua
+nn4.v1.t7
