@@ -17,11 +17,6 @@ def stream_to_image(file):
     rgbFrame[:, :, 1] = buf[:, :, 1]
     rgbFrame[:, :, 2] = buf[:, :, 0]
 
-    plt.figure()
-    plt.imshow(rgbFrame)
-    plt.xticks([])
-    plt.yticks([])
-
     return rgbFrame
 
 
