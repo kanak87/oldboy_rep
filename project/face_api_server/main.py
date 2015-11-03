@@ -177,25 +177,26 @@ def request_face_detection():
 
         # results.append((identity, bb, result_proba_list[identity]))
         detected_faces_result = []
-        for face in detected_faces:
-            if face[0] is not -1:
-                user = faceDatabase.find_user_by_index(face[0])
-                detected_entity = {
-                    "id": user.identity,
-                    "name": user.name,
-                    "probability": face[2],
-                    "boundingbox": [face[1].left(), face[1].top(), face[1].right(), face[1].bottom()],
-                    "thumbnail": user.thumbnail
-                }
-            else:
-                detected_entity = {
-                    "id": -1,
-                    "name": 'unknown',
-                    "probability": 0.0,
-                    "boundingbox": face[1],
-                    "thumbnail": ""
-                }
-            detected_faces_result.append(detected_entity)
+        if detected_faces is not None:
+            for face in detected_faces:
+                if face[0] is not -1:
+                    user = faceDatabase.find_user_by_index(face[0])
+                    detected_entity = {
+                        "id": user.identity,
+                        "name": user.name,
+                        "probability": face[2],
+                        "boundingbox": [face[1].left(), face[1].top(), face[1].right(), face[1].bottom()],
+                        "thumbnail": user.thumbnail
+                    }
+                else:
+                    detected_entity = {
+                        "id": -1,
+                        "name": 'unknown',
+                        "probability": 0.0,
+                        "boundingbox": face[1],
+                        "thumbnail": ""
+                    }
+                detected_faces_result.append(detected_entity)
 
         annotated_image = annotate_face_info(image, detected_faces, faceDatabase)
 
@@ -225,9 +226,6 @@ def request_face_detection():
 
 
 if __name__ == "__main__":
-    print "## init websocket"
-    # detectStreamService = DetectionWebSocket()
-
     print "## face database"
     faceDatabase = FaceDatabase()
 

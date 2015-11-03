@@ -17,6 +17,11 @@ def stream_to_image(file):
     rgbFrame[:, :, 1] = buf[:, :, 1]
     rgbFrame[:, :, 2] = buf[:, :, 0]
 
+    plt.figure()
+    plt.imshow(rgbFrame)
+    plt.xticks([])
+    plt.yticks([])
+
     return rgbFrame
 
 
@@ -63,6 +68,9 @@ def string_to_image(image_string):
 
 def annotate_face_info(image, detected_faces, faceDatabase):
     annotated_frame = np.copy(image)
+
+    if detected_faces is None:
+        return annotated_frame
 
     for detected_face in detected_faces:
         bb = detected_face[1]
