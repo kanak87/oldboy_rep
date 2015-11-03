@@ -3,9 +3,16 @@ import os
 import pickle
 import sys, traceback
 
+from twisted.python import log
+from twisted.internet import reactor
+from twisted.web.server import Site
+from twisted.web.wsgi import WSGIResource
+
+from autobahn.twisted.websocket import WebSocketServerFactory, WebSocketServerProtocol
+from autobahn.twisted.resource import WebSocketResource, WSGIRootResource
+
 from flask import Flask, request, send_from_directory
 from flask.ext.cors import cross_origin
-from flask_socketio import SocketIO
 
 from werkzeug.utils import secure_filename
 
@@ -15,7 +22,19 @@ from util import *
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
-socketio = SocketIO(app)
+
+faceDetectSocketList = []
+
+
+class FaceDetectReceiveSocket(WebSocketServerProtocol):
+    def onConnect(self, request):
+        faceDetectSocketList.append(self)
+
+    def onClose(self, wasClean, code, reason):
+        faceDetectSocketList.remove(self)
+
+    def onMessage(self, payload, isBinary):
+        print payload
 
 
 @app.route("/")
@@ -156,41 +175,6 @@ def request_face_detection():
 
         detected_faces = faceService.predict(image)
 
-        result['detected_faces'] = []
-        for face in detected_faces:
-            user = faceDatabase.find_user_by_index(face[0])
-            detected_entity = {
-                "id": user.identity,
-                "name": user.name,
-                "probability": face[2],
-                "boundingbox": face[1],
-                "thumbnail": user.thumbnail
-            }
-            result['detected_faces'].append(detected_entity)
-
-    except Exception as e:
-        print "-" * 60
-        print e.message
-        print " "
-        print traceback.print_exc(file=sys.stdout)
-        print "-" * 60
-        result = {"result": "-1",
-                  "message": e.message}
-
-    return json.dumps(result)
-
-
-@app.route('/request_face_detection2', methods=['POST'])
-@cross_origin()
-def request_face_detection2():
-    try:
-        result = {"result": "0"}
-        data = json.loads(request.form['data'])
-        device_id = data['device_id']
-        image = string_to_image(data['img'])
-
-        detected_faces = faceService.predict(image)
-
         # results.append((identity, bb, result_proba_list[identity]))
         detected_faces_result = []
         for face in detected_faces:
@@ -214,14 +198,18 @@ def request_face_detection2():
             detected_faces_result.append(detected_entity)
 
         annotated_image = annotate_face_info(image, detected_faces, faceDatabase)
-        socketio.emit('frame',
-                      {
-                          'device_id': device_id,
-                          'image': image_to_url(annotated_image),
-                          'detected_faces': detected_faces_result
-                      },
-                      broadcast=True)
 
+        msg = {
+            "type": "image",
+            "content": {
+                'device_id': device_id,
+                'image': image_to_url(annotated_image),
+                'detected_faces': detected_faces_result
+            }
+        }
+
+        for protocol in faceDetectSocketList:
+            protocol.sendMessage(json.dumps(msg))
         result['detected_faces'] = detected_faces_result
 
     except Exception as e:
@@ -236,16 +224,6 @@ def request_face_detection2():
     return json.dumps(result)
 
 
-@socketio.on('connect', namespace='/frame')
-def test_connect():
-    print "ws connected"
-
-
-@socketio.on('disconnect', namespace='/frame')
-def test_disconnect():
-    print "ws disconnected"
-
-
 if __name__ == "__main__":
     print "## init websocket"
     # detectStreamService = DetectionWebSocket()
@@ -257,5 +235,26 @@ if __name__ == "__main__":
     faceService = FaceService()
 
     print "## server start"
-    socketio.run(app, host="0.0.0.0", port=20100, debug=True)
-    # app.run(host="0.0.0.0", port=20100, debug=True)
+    if len(sys.argv) > 1 and sys.argv[1] == 'debug':
+        log.startLogging(sys.stdout)
+        debug = True
+    else:
+        debug = False
+
+    app.debug = debug
+    if debug:
+        log.startLogging(sys.stdout)
+
+    wsFactory = WebSocketServerFactory(u"ws://127.0.0.1:20100",
+                                       debug=debug,
+                                       debugCodePaths=debug)
+
+    wsFactory.protocol = FaceDetectReceiveSocket
+    wsResource = WebSocketResource(wsFactory)
+    wsgiResource = WSGIResource(reactor, reactor.getThreadPool(), app)
+    rootResource = WSGIRootResource(wsgiResource, {'ws': wsResource})
+
+    site = Site(rootResource)
+
+    reactor.listenTCP(20100, site)
+    reactor.run()
