@@ -2,44 +2,35 @@ import base64
 import StringIO
 import cStringIO
 import urllib
+
 import cv2
 import numpy as np
 from PIL import Image
-import matplotlib.pyplot as plt
+
+
+def save_array(image_array, filename):
+    im = Image.fromarray(image_array)
+    im.save(filename)
+
+
+def image_to_nparray(image):
+    buf = np.asarray(image)
+    rgbFrame = np.zeros((image.height, image.width, 3), dtype=np.uint8)
+    rgbFrame[:, :, 0] = buf[:, :, 0]
+    rgbFrame[:, :, 1] = buf[:, :, 1]
+    rgbFrame[:, :, 2] = buf[:, :, 2]
+
+    return rgbFrame
 
 
 def stream_to_image(file):
     image = Image.open(cStringIO.StringIO(file.read()))
-
-    buf = np.fliplr(np.asarray(image))
-    rgbFrame = np.zeros((image.height, image.width, 3), dtype=np.uint8)
-    rgbFrame[:, :, 0] = buf[:, :, 2]
-    rgbFrame[:, :, 1] = buf[:, :, 1]
-    rgbFrame[:, :, 2] = buf[:, :, 0]
-
-    plt.figure()
-    plt.imshow(rgbFrame)
-    plt.xticks([])
-    plt.yticks([])
-
-    return rgbFrame
+    return image_to_nparray(image)
 
 
 def file_to_image(path):
     image = Image.open(path)
-
-    buf = np.fliplr(np.asarray(image))
-    rgbFrame = np.zeros((image.height, image.width, 3), dtype=np.uint8)
-    rgbFrame[:, :, 0] = buf[:, :, 2]
-    rgbFrame[:, :, 1] = buf[:, :, 1]
-    rgbFrame[:, :, 2] = buf[:, :, 0]
-
-    plt.figure()
-    plt.imshow(rgbFrame)
-    plt.xticks([])
-    plt.yticks([])
-
-    return rgbFrame
+    return image_to_nparray(image)
 
 
 def string_to_image(image_string):
@@ -50,20 +41,9 @@ def string_to_image(image_string):
     imgF = StringIO.StringIO()
     imgF.write(imgdata)
     imgF.seek(0)
-    img = Image.open(imgF)
-    buf = np.fliplr(np.asarray(img))
+    image = Image.open(imgF)
 
-    rgbFrame = np.zeros((img.height, img.width, 3), dtype=np.uint8)
-    rgbFrame[:, :, 0] = buf[:, :, 2]
-    rgbFrame[:, :, 1] = buf[:, :, 1]
-    rgbFrame[:, :, 2] = buf[:, :, 0]
-
-    plt.figure()
-    plt.imshow(rgbFrame)
-    plt.xticks([])
-    plt.yticks([])
-
-    return rgbFrame
+    return image_to_nparray(image)
 
 
 def annotate_face_info(image, detected_faces, faceDatabase):
@@ -94,15 +74,10 @@ def annotate_face_info(image, detected_faces, faceDatabase):
 
 
 def image_to_url(image):
-    plt.figure()
-    plt.imshow(image)
-    plt.xticks([])
-    plt.yticks([])
+    img = Image.fromarray(image)
 
-    imgdata = StringIO.StringIO()
-    plt.savefig(imgdata, format='png')
+    imgdata = StringIO.StringIO(img._repr_png_())
     imgdata.seek(0)
-    content = 'data:image/png;base64,' + \
-              urllib.quote(base64.b64encode(imgdata.buf))
+    content = 'data:image/png;base64,' + urllib.quote(base64.b64encode(imgdata.buf))
 
     return content

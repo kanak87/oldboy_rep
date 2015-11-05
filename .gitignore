@@ -131,3 +131,11 @@ celeb-classifier.nn4.v1.pkl
 nn2.def.lua
 nn4.def.lua
 nn4.v1.t7
+
+project/face_api_server/test/data/*
+project/face_api_server/thumbnails/*
+
+*.pickle
+
+*~
+.DS_Store

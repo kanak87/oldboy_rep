@@ -5,6 +5,8 @@ import sys
 import imagehash
 from sklearn.grid_search import GridSearchCV
 from sklearn.svm import SVC
+from Queue import PriorityQueue
+from face_api_server.util import save_array
 
 fileDir = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(os.path.join(fileDir, ".."))
@@ -48,14 +50,7 @@ class FaceService(object):
         if os.path.exists("svm.pickle"):
             self.svm = pickle.load(open('svm.pickle', 'rb'))
         else:
-            param_grid = [
-                {'C': [1, 10, 100, 1000],
-                 'kernel': ['linear']},
-                {'C': [1, 10, 100, 1000],
-                 'gamma': [0.001, 0.0001],
-                 'kernel': ['rbf']}
-            ]
-            self.svm = GridSearchCV(SVC(C=1, probability=True), param_grid, cv=5)
+            self.svm = None
 
     def training(self, identity, images):
         X = []
@@ -81,6 +76,8 @@ class FaceService(object):
                 training_result.append('not exist face in image')
                 continue
 
+            #save_array(alignedFace, "train.png")
+
             phash = str(imagehash.phash(Image.fromarray(alignedFace)))
             if phash in self.trained_images:
                 rep = self.trained_images[phash].rep
@@ -95,6 +92,9 @@ class FaceService(object):
                 training_result.append(0)
 
         if identity > 0:
+            X = np.vstack(X)
+            y = np.array(y)
+
             param_grid = [
                 {'C': [1, 10, 100, 1000],
                  'kernel': ['linear']},
@@ -107,14 +107,11 @@ class FaceService(object):
         return training_result
 
     def predict(self, image):
-        if len(self.trained_images) < 2:
-            return None
-
+        result_priority_queue = PriorityQueue()
         results = []
-        bbs = self.align.getAllFaceBoundingBoxes(image)
 
-        for bb in bbs:
-            # print(len(bbs))
+        bbs = self.align.getAllFaceBoundingBoxes(image)
+        for bb_index, bb in enumerate(bbs):
             alignedFace = self.align.alignImg("affine", 96, image, bb)
             if alignedFace is None:
                 continue
@@ -122,18 +119,47 @@ class FaceService(object):
             phash = str(imagehash.phash(Image.fromarray(alignedFace)))
             if phash in self.trained_images:
                 identity = self.trained_images[phash].identity
-                results.append(identity, bb, 1)
+                result_priority_queue.put_nowait((-1.0, identity, bb_index))
             else:
                 rep = self.net.forwardImage(alignedFace)
                 if self.svm is not None:
-                    # self.svm.predict(rep)
                     result_proba_list = self.svm.predict_proba(rep)
                     identity = np.argmax(result_proba_list[0])
-                    # threshold = 0.8
-                    threshold = 0.3
-                    if result_proba_list[0][identity] > threshold:
-                        results.append((identity, bb, result_proba_list[0][identity]))
-                    else:
-                        results.append((-1, bb, 0.0))
+                    for prob in result_proba_list[0]:
+                        result_priority_queue.put_nowait((prob * -1.0, identity, bb_index))
+                else:
+                    result_priority_queue.put_nowait((0.0, -1, bb_index))
+
+        matched_identities = []
+        matched_bb_indices = []
+        threshold = 0.6
+
+        while len(matched_identities) != len(bbs) and result_priority_queue.empty() is False:
+            detectedFaceInfo = result_priority_queue.get_nowait()
+
+            identity = detectedFaceInfo[1]
+            probability = detectedFaceInfo[0] * -1.0
+            bb_index = detectedFaceInfo[2]
+            print detectedFaceInfo
+
+            if identity in matched_identities:
+                print "matched_bbs : " + str(matched_identities)
+                continue
+
+            matched_bb_indices.append(bb_index)
+            matched_identities.append(identity)
+
+            if probability < threshold:
+                results.append((-1, bbs[bb_index], 0.0))
+            else:
+                results.append((identity, bbs[bb_index], probability))
+
+            print '+' + str(results[len(results) - 1])
+
+        for bb_index, bb in enumerate(bbs):
+            if bb_index in matched_bb_indices:
+                continue
+
+            results.append((-1, bb, 0.0))
 
         return results
