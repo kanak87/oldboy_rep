@@ -6,7 +6,6 @@ import imagehash
 from sklearn.grid_search import GridSearchCV
 from sklearn.svm import SVC
 from Queue import PriorityQueue
-from face_api_server.util import save_array
 
 fileDir = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(os.path.join(fileDir, ".."))
