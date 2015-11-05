@@ -1,2 +1,0 @@
-class DetectionWebSocket(object):
-    pass

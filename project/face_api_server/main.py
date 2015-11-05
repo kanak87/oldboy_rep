@@ -130,7 +130,7 @@ def request_register_face():
                     "filename": file.filename,
                     "result": training_result[i]
                 })
-                ++i
+                i += 1
 
         result = {
             "result": "0",
@@ -193,7 +193,79 @@ def request_face_detection():
                         "id": -1,
                         "name": 'unknown',
                         "probability": 0.0,
-                        "boundingbox": face[1],
+                        "boundingbox": [face[1].left(), face[1].top(), face[1].right(), face[1].bottom()],
+                        "thumbnail": ""
+                    }
+                detected_faces_result.append(detected_entity)
+
+        annotated_image = annotate_face_info(image, detected_faces, faceDatabase)
+
+        msg = {
+            "type": "image",
+            "content": {
+                'device_id': device_id,
+                'image': image_to_url(annotated_image),
+                'detected_faces': detected_faces_result
+            }
+        }
+
+        for protocol in faceDetectSocketList:
+            protocol.sendMessage(json.dumps(msg))
+        result['detected_faces'] = detected_faces_result
+
+    except Exception as e:
+        print "-" * 60
+        print e.message
+        print " "
+        print traceback.print_exc(file=sys.stdout)
+        print "-" * 60
+        result = {"result": "-1",
+                  "message": e.message}
+
+    return json.dumps(result)
+
+
+@app.route('/request_face_detection_by_file', methods=['POST'])
+@cross_origin()
+def request_face_detection_by_file():
+    try:
+        result = {"result": "0"}
+        data = json.loads(request.form['data'])
+        device_id = data['device_id']
+
+        uploaded_files = request.files.getlist("file[]")
+        if len(uploaded_files) < 1:
+            uploaded_files = request.files.getlist("files")
+            if len(uploaded_files) < 1:
+                raise Exception("upload file error")
+
+        images = []
+        for file in uploaded_files:
+            if file and allowed_file(file.filename):
+                images.append(stream_to_image(file))
+
+        image = images[0]
+
+        detected_faces = faceService.predict(image)
+
+        detected_faces_result = []
+        if detected_faces is not None:
+            for face in detected_faces:
+                if face[0] is not -1:
+                    user = faceDatabase.find_user_by_index(face[0])
+                    detected_entity = {
+                        "id": user.identity,
+                        "name": user.name,
+                        "probability": face[2],
+                        "boundingbox": [face[1].left(), face[1].top(), face[1].right(), face[1].bottom()],
+                        "thumbnail": user.thumbnail
+                    }
+                else:
+                    detected_entity = {
+                        "id": -1,
+                        "name": 'unknown',
+                        "probability": 0.0,
+                        "boundingbox": [face[1].left(), face[1].top(), face[1].right(), face[1].bottom()],
                         "thumbnail": ""
                     }
                 detected_faces_result.append(detected_entity)
