@@ -354,7 +354,7 @@ def request_face_detection_by_file():
 
 if __name__ == "__main__":
     # create thumbnail directory
-    if os.path.exists(app.config['UPLOAD_FOLDER']):
+    if not os.path.exists(app.config['UPLOAD_FOLDER']):
         os.makedirs(app.config['UPLOAD_FOLDER'])
 
     print "## face database"
