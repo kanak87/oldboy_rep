@@ -18,6 +18,10 @@ def show_index():
     				}
     return render_template('index2.html', **templateData)
 
+@app.route('/regit')
+def registration():
+	templateData = {'title' : 'Face Detector'}
+	return render_template('index2.html', ** templateData)
 
 if __name__ == "__main__":
     app.run(port=5000, debug=True)
