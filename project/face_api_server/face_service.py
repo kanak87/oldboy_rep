@@ -104,6 +104,11 @@ class FaceService(object):
 
                 training_result.append(0)
 
+        for index, identity in enumerate(self.identities):
+            for i in range(len(y)):
+                if y[i] == identity:
+                    y[i] = index
+
         if len(self.identities) > 1:
             X = np.vstack(X)
             y = np.array(y)
@@ -116,9 +121,10 @@ class FaceService(object):
                  'kernel': ['rbf']}
             ]
             print "*" * 60
-            print X
+            for x in X:
+                print x[:4]
             print y
-            self.svm = GridSearchCV(SVC(C=1, probability=True), param_grid, cv=5).fit(X, y)
+            self.svm = GridSearchCV(SVC(C=0.5, probability=True), param_grid, cv=5).fit(X, y)
 
         return training_result
 
@@ -143,6 +149,11 @@ class FaceService(object):
         for key in remove_faces:
             del self.trained_images[key]
 
+        for index, identity in enumerate(self.identities):
+            for i in range(len(y)):
+                if y[i] == identity:
+                    y[i] = index
+
         if len(self.identities) > 1:
             X = np.vstack(X)
             y = np.array(y)
@@ -155,9 +166,10 @@ class FaceService(object):
                  'kernel': ['rbf']}
             ]
             print "*" * 60
-            print X
+            for x in X:
+                print x[:4]
             print y
-            self.svm = GridSearchCV(SVC(C=1, probability=True), param_grid, cv=5).fit(X, y)
+            self.svm = GridSearchCV(SVC(C=0.5, probability=True), param_grid, cv=5).fit(X, y)
         else:
             self.svm = None
 
