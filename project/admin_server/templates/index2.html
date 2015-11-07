@@ -1,15 +1,103 @@
 <html>
 <head>
+    <meta charset="utd-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script>
+    <script type="text/javascript" charset="utf-8"></script>
+
+    <!-- 합쳐지고 최소화된 최신 CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <!-- 부가적인 테마 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.2/cerulean/bootstrap.min.css" type="text/css">
+
+    <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
     <title>Image Upload Form</title>
     <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
-    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 </head>
 <style>
     body { padding-top: 70px; }
 </style>
 <body>
+    <h1>Camera devices</h1>
+    <br>
+    <div class="container">
+        <div id="device_panel"class="row">
+
+        </div>
+    </div>
+    <br><hr>
+    <div id="registered-image-holder">
+        <h1>Registered Person</h1>
+    </div>
+    <br>
+    <script>
+        function submitForm() {
+            console.log("submit event");
+            var fd = new FormData(document.getElementById("files"));
+            var dic = '{ "name" : "' + name +'" }';
+            fd.append("data", dic);
+
+            $.ajax({
+              url: host + "request_register_face",
+              type: "POST",
+              data: fd,
+              enctype: 'multipart/form-data',
+              processData: false,  // tell jQuery not to process the data
+              contentType: false   // tell jQuery not to set contentType
+            }).done(function( data ) {
+                //debug console
+                console.log("Response Output:");
+                console.log(data);
+                var pars = JSON.parse(data);
+                if(pars["face"] != null) {
+                    var face = pars["face"];
+
+                    regitPersonPanel(face["thumbnail"], face["name"]);
+                } else {
+                    console.log("Does Not exist the face");
+                }
+            });
+            return false;
+        }
+    </script>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid" style="font-size: 200%">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/" style="font-size: 120%"> TEAM OLD BOY </a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="/wanted"> 범죄자찾기 </a></li>
+            <li><a href="/lostchild"> 미아찾기 </a></li>
+            <li><a href="/customer"> 손님인식 </a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div id="registered_panel" class="row">
+
+        </div>
+    </div>
+
+    <br><hr>
+    <h1>Registration</h1>
+    <br>
+
     <form method="post" id="files" name="files" enctype="multipart/form-data" onsubmit="return submitForm();">
         <input id="fileUpload" type="file" name="file[]" multiple />
         <br>
@@ -19,8 +107,7 @@
     <label>Image Files</label><br>
     <div id="image-holder"></div>
     <script>
-        var host = "http://175.126.82.175:20100/"
-        //first data send for already registered person
+        // first data send for already registered person
         $( document ).ready(function() {
             var formData = new FormData();
             formData.append("data", '{ }');
@@ -31,22 +118,21 @@
                 processData: false,  // tell jQuery not to process the data
                 contentType: false   // tell jQuery not to set contentType
             }).done(function( data ) {
-                //debug console
+                // debug console
                 console.log("Response Output:");
                 console.log(data);
 
                 var pars = JSON.parse(data);
                 var device_ids = pars["device_ids"];
                 var face = pars["faces"];
-                var reg_image_holder = $("#registered-image-holder");
-                //for(var i = 0; i < device_ids.length; i++) {
-                for(var i = 0; i < 1; i++) {
-                    $("<img />", {
-                        "src": host + face[0]["thumbnail"],
-                        "id": face[i]["id"]
-                    }).width(150).height(150).appendTo(reg_image_holder);
-                    $("<figcaption id='caption'> </figcaption>").appendTo(reg_image_holder);
-                    document.getElementById("caption").innerHTML = face[i]["name"];
+
+                // Connected devices info
+                for(var i = 0; i < device_ids.length; i++) {
+                    devicePicturePanel(device_ids[i]);
+                }
+                // registered person info
+                for(var i = 0; i < face.length; i++) {
+                    regitPersonPanel(face[i]["thumbnail"], face[i]["name"]);
                 }
             });
         });
@@ -95,86 +181,87 @@
         });
     </script>
 
-    <div id="registered-image-holder">
-        <br>
-        <h1>Registered Person</h1>
-    </div>
-    <script>
-        function submitForm() {
-            console.log("submit event");
-            var fd = new FormData(document.getElementById("files"));
-            var dic = '{ "name" : "' + name +'" }';
-            fd.append("data", dic);
-
-            $.ajax({
-              url: host + "request_register_face",
-              type: "POST",
-              data: fd,
-              enctype: 'multipart/form-data',
-              processData: false,  // tell jQuery not to process the data
-              contentType: false   // tell jQuery not to set contentType
-            }).done(function( data ) {
-                //debug console
-                console.log("Response Output:");
-                console.log(data);
-                var pars = JSON.parse(data);
-                if(pars["face"] != null) {
-                    var face = pars["face"];
-                    var reg_image_holder = $("#registered-image-holder");
-                    $("<img />", {
-                        "src": host + face["thumbnail"],
-                        "id": face["id"],
-                        "name": face["name"]
-                    }).width(150).height(150).appendTo(reg_image_holder);
-
-                } else {
-                    alert("Does Not exist the face");
-                }
-            });
-            return false;
-        }
-    </script>
-
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container-fluid" style="font-size: 200%">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="/" style="font-size: 120%"> TEAM OLD BOY </a>
-        </div>
-
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="/wanted"> 범죄자찾기 </a></li>
-            <li><a href="/lostchild"> 미아찾기 </a></li>
-            <li><a href="/customer"> 손님인식 </a></li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-
-    <div class="container-fluid">
-        <div class="row">
-            {% for pic in pictures %}
-            <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
-                <div class="panel panel-info" style="font-size: 150%">
-                    <div id="" class="panel-heading text-center">
-                    this is heading <b>{{pic.name}}</b>   
-                    </div>
-                    <div class="panel-body" style="text-align: center">
-                    this is body
-                    </div>
-                    <div class="panel-footer" style="text-align: center">
-                    this is footer
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
 </body>
+
+<script>
+    var host = "http://175.126.82.175:20100/";
+
+    function regitPersonPanel(thumb, name) {
+        var regit_id = "regit_id_";
+        var thumb_id = "thumb_id_";
+        var name_id = name;
+
+        for(var i = 0; ; i++) {
+            if(document.getElementById(regit_id + i) == null) {
+                $("#registered_panel").append('<div class="col-lg-2 col-md-2 col-sm-3 col-xs-3">' +
+                    '<div class="panel panel-info" style="font-size: 130%">' +
+                        '<div id="" class="panel-heading text-center">' +
+                            'Wanted' +
+                        '</div>' +
+                        '<div class="panel-body" style="text-align: center">' +
+                            '<img src="' + host + thumb + '" id="' + thumb_id + i +
+                                '" width="150px" height="150px" style="max-width:100%">' +
+                        '</div>' +
+                        '<div class="panel-footer" style="text-align: center">' +
+                            '<div id="' + name_id + '" style="text-align: center">' + name_id +
+                        '</div>' +
+                    '</div>' +
+                '</div>')
+                break;
+            }
+        }
+    }
+
+    function devicePicturePanel(id, thumbnail) {
+        var device_id = 'device_' + id;
+        var thumb_id = 'device_thumb_' + id;
+        if(document.getElementById(device_id) == null) {
+            // Not exist - make new panel
+            $("#device_panel").append('<div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">' +
+                '<div class="panel panel-info" style="font-size: 150%">' +
+                    '<div id="' + device_id + '" class="panel-heading text-center">' +
+                        device_id +
+                    '</div>' +
+                    '<div class="panel-body" style="text-align: center">' +
+                        '<img src="' + thumbnail + '" id="' + thumb_id +
+                            '" width="150px" height="150px" style="max-width:100%">' +
+                        '</img>' +
+                    '</div>' +
+                '</div>' +
+            '</div>');
+        } else {
+            //Already exist - change img thumbnail
+            $('<img src="' + thumbnail + '" id="' + thumb_id +
+                    '" width="200px" height="200px" style="max-width:100%"></img>').replaceAll("#" + thumb_id);
+        }
+    }
+
+    function createSocket(address, name) {
+        socket = new WebSocket(address);
+        socketName = name;
+        socket.binaryType = "arraybuffer";
+        socket.onopen = function() {
+            console.log("Connected")
+        }
+        socket.onmessage = function(e) {
+            j = JSON.parse(e.data)
+            console.log(j["content"]["device_id"]);
+            if(j.type == "image") {
+                devicePicturePanel(j["content"]["device_id"], j['content']['image']);
+                //device panel process
+                $("#device_image").html(
+                    "<img src='" + j['content']['image'] + "' width='430px'></img>"
+                )
+            }
+        }
+        socket.onclose = function(e) {
+            if (e.target == socket) {
+                $("#serverStatus").html("Disconnected.")
+            }
+        }
+    }
+    $("#detectedFaces").html("");
+    createSocket("ws://175.126.82.175:20100/ws", "Local");
+</script>
+
 </html>
