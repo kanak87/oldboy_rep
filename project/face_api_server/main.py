@@ -54,6 +54,9 @@ def request_data():
         faces = []
 
         for user in faceDatabase.users:
+            if user.identity == -1:
+                continue
+
             user_face = {
                 "id": user.identity,
                 "name": user.name,
