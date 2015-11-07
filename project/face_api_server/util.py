@@ -6,6 +6,7 @@ import urllib
 import cv2
 import numpy as np
 from PIL import Image
+from proxy.face_database import FaceKind
 
 
 def save_array(image_array, filename):
@@ -57,18 +58,29 @@ def annotate_face_info(image, detected_faces, faceDatabase):
         bl = (bb.left(), bb.bottom())
         tr = (bb.right(), bb.top())
 
-        cv2.rectangle(annotated_frame, bl, tr, color=(153, 255, 204),
-                      thickness=3)
         identity = detected_face[0]
         if identity == -1:
             name = "Unknown"
+            color = (152, 255, 204)
         else:
-            name = faceDatabase.find_user_by_index(identity).name
+            user = faceDatabase.find_user_by_index(identity)
+            name = user.name
+            if user.kind is FaceKind.Normal:
+                color = (64, 255, 92)
+            elif user.kind is FaceKind.Missing:
+                color = (156, 117, 235)
+            elif user.kind is FaceKind.Wanted:
+                color = (240, 96, 93)
+            else:
+                color = (152, 255, 204)
 
         probability = detected_face[2] * 100
+
+        cv2.rectangle(annotated_frame, bl, tr, color=color,
+                      thickness=3)
         cv2.putText(annotated_frame, name + '[' + str(round(probability, 1)) + '%]', (bb.left(), bb.top() - 10),
                     cv2.FONT_HERSHEY_SIMPLEX, fontScale=0.75,
-                    color=(152, 255, 204), thickness=2)
+                    color=color, thickness=2)
 
     return annotated_frame
 

@@ -1,22 +1,21 @@
 import json
 import os
 import pickle
-import sys, traceback
+import sys
+import traceback
 
 from twisted.python import log
 from twisted.internet import reactor
 from twisted.web.server import Site
 from twisted.web.wsgi import WSGIResource
-
 from autobahn.twisted.websocket import WebSocketServerFactory, WebSocketServerProtocol
 from autobahn.twisted.resource import WebSocketResource, WSGIRootResource
-
 from flask import Flask, request, send_from_directory
 from flask.ext.cors import cross_origin
-
 from werkzeug.utils import secure_filename
 
-from proxy.face_database import FaceDatabase
+from proxy.redis_function import RedisProxy
+from proxy.face_database import FaceDatabase, FaceKind
 from face_service import FaceService
 from util import *
 
@@ -47,9 +46,10 @@ def hello():
 @cross_origin()
 def request_data():
     if request.form['data']:
-        print request.form['data']
+        #print request.form['data']
+        pass
     try:
-        device_ids = [1, 2, 3]
+        device_datas = redisProxy.get_device_datas()
 
         faces = []
 
@@ -57,12 +57,13 @@ def request_data():
             user_face = {
                 "id": user.identity,
                 "name": user.name,
+                "kind": user.kind,
                 "thumbnail": user.thumbnail
             }
             faces.append(user_face)
 
         result = {"reuslt": "0",
-                  "device_ids": device_ids,
+                  "device_datas": device_datas,
                   "faces": faces
                   }
 
@@ -93,6 +94,7 @@ def request_register_face():
     try:
         data = json.loads(request.form['data'])
         name = data['name']
+        kind = data['kind']
 
         uploaded_files = request.files.getlist("file[]")
         if len(uploaded_files) < 1:
@@ -113,7 +115,7 @@ def request_register_face():
             thumbnail_path = os.path.join(app.config['UPLOAD_FOLDER'], thumbnail_path)
             thumbnailFile.save(thumbnail_path)
 
-            identity = faceDatabase.add_new_user(name, thumbnail_path)
+            identity = faceDatabase.add_new_user(name, thumbnail_path, kind)
 
         else:
             user = faceDatabase.find_user_by_name(name)
@@ -137,9 +139,40 @@ def request_register_face():
             "face": {
                 "id": identity,
                 "name": name,
+                "kind": kind,
                 "thumbnail": thumbnail_path
             },
             "training_result": file_training_result
+        }
+
+        pickle.dump(faceDatabase.users, open('user.pickle', 'wb'), -1)
+        pickle.dump(faceService.svm, open('svm.pickle', 'wb'), -1)
+        pickle.dump(faceService.trained_images, open('trained_images.pickle', 'wb'), -1)
+
+    except Exception as e:
+        print "-" * 60
+        print e.message
+        print " "
+        print traceback.print_exc(file=sys.stdout)
+        print "-" * 60
+        result = {"result": "-1",
+                  "message": e.message}
+
+    return json.dumps(result)
+
+
+@app.route("/request_unregister_face", methods=['POST'])
+@cross_origin()
+def request_unregister_face():
+    try:
+        data = json.loads(request.form['data'])
+        name = data['name']
+
+        identity = faceDatabase.remove_user(name)
+        faceService.remove_face(identity)
+
+        result = {
+            "result": "0",
         }
 
         pickle.dump(faceDatabase.users, open('user.pickle', 'wb'), -1)
@@ -184,6 +217,7 @@ def request_face_detection():
                     detected_entity = {
                         "id": user.identity,
                         "name": user.name,
+                        "kind": user.kind,
                         "probability": face[2],
                         "boundingbox": [face[1].left(), face[1].top(), face[1].right(), face[1].bottom()],
                         "thumbnail": user.thumbnail
@@ -192,6 +226,7 @@ def request_face_detection():
                     detected_entity = {
                         "id": -1,
                         "name": 'unknown',
+                        "kind": FaceKind.Unknown,
                         "probability": 0.0,
                         "boundingbox": [face[1].left(), face[1].top(), face[1].right(), face[1].bottom()],
                         "thumbnail": ""
@@ -208,6 +243,8 @@ def request_face_detection():
                 'detected_faces': detected_faces_result
             }
         }
+
+        redisProxy.update_device(device_id)
 
         for protocol in faceDetectSocketList:
             protocol.sendMessage(json.dumps(msg))
@@ -233,6 +270,14 @@ def request_face_detection_by_file():
         data = json.loads(request.form['data'])
         device_id = data['device_id']
 
+        send_image = True
+
+        try:
+            if data['debug'] == 1:
+                send_image = False
+        except Exception:
+            send_image = True
+
         uploaded_files = request.files.getlist("file[]")
         if len(uploaded_files) < 1:
             uploaded_files = request.files.getlist("files")
@@ -256,6 +301,7 @@ def request_face_detection_by_file():
                     detected_entity = {
                         "id": user.identity,
                         "name": user.name,
+                        "kind": user.kind,
                         "probability": face[2],
                         "boundingbox": [face[1].left(), face[1].top(), face[1].right(), face[1].bottom()],
                         "thumbnail": user.thumbnail
@@ -264,6 +310,7 @@ def request_face_detection_by_file():
                     detected_entity = {
                         "id": -1,
                         "name": 'unknown',
+                        "kind": FaceKind.Unknown,
                         "probability": 0.0,
                         "boundingbox": [face[1].left(), face[1].top(), face[1].right(), face[1].bottom()],
                         "thumbnail": ""
@@ -271,19 +318,27 @@ def request_face_detection_by_file():
                 detected_faces_result.append(detected_entity)
 
         annotated_image = annotate_face_info(image, detected_faces, faceDatabase)
+        annotated_url_image = image_to_url(annotated_image)
+
+        websocket_send_data = {
+            'device_id': device_id,
+            'image': annotated_url_image,
+            'detected_faces': detected_faces_result
+        }
 
         msg = {
             "type": "image",
-            "content": {
-                'device_id': device_id,
-                'image': image_to_url(annotated_image),
-                'detected_faces': detected_faces_result
-            }
+            "content": websocket_send_data
         }
+
+        redisProxy.update_device(device_id, websocket_send_data)
 
         for protocol in faceDetectSocketList:
             protocol.sendMessage(json.dumps(msg))
         result['detected_faces'] = detected_faces_result
+
+        if send_image is True:
+            result['image'] = annotated_url_image
 
     except Exception as e:
         print "-" * 60
@@ -298,8 +353,15 @@ def request_face_detection_by_file():
 
 
 if __name__ == "__main__":
+    # create thumbnail directory
+    if os.path.exists(app.config['UPLOAD_FOLDER']):
+        os.makedirs(app.config['UPLOAD_FOLDER'])
+
     print "## face database"
     faceDatabase = FaceDatabase()
+
+    print "## redis"
+    redisProxy = RedisProxy()
 
     print "## init face service"
     faceService = FaceService()
