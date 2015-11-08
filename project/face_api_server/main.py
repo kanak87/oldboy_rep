@@ -237,17 +237,20 @@ def request_face_detection():
                 detected_faces_result.append(detected_entity)
 
         annotated_image = annotate_face_info(image, detected_faces, faceDatabase)
+        annotated_url_image = image_to_url(annotated_image)
+
+        websocket_send_data = {
+            'device_id': device_id,
+            'image': annotated_url_image,
+            'detected_faces': detected_faces_result
+        }
 
         msg = {
             "type": "image",
-            "content": {
-                'device_id': device_id,
-                'image': image_to_url(annotated_image),
-                'detected_faces': detected_faces_result
-            }
+            "content": websocket_send_data
         }
 
-        redisProxy.update_device(device_id)
+        redisProxy.update_device(device_id, websocket_send_data)
 
         for protocol in faceDetectSocketList:
             protocol.sendMessage(json.dumps(msg))
