@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utd-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script>
+    <script type="text/javascript" charset="utf-8"></script>
+
+    <!-- 합쳐지고 최소화된 최신 CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <!-- 부가적인 테마 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.2/cerulean/bootstrap.min.css" type="text/css">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+    <title>Image Upload Form</title>
+    <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
+</head>
+<style>
+    body { padding-top: 70px; }
+</style>
+<body>
+    <script>
+        function submitForm() {
+            console.log("submit event");
+            var radio_ele = document.forms[0].elements;
+            var len = radio_ele.length;
+            var check_val;
+            for(var i = 0; i < len; i++) {
+                if(radio_ele[i].checked)
+                    check_val = radio_ele[i].value;
+            }
+            if(check_val == null)
+                check_val = -1;
+
+            var fd = new FormData(document.getElementById("files"));
+            var dic = '{ "name" : "' + name +'", "kind" : "' + check_val + '" }';
+            fd.append("data", dic);
+
+            $.ajax({
+              url: host + "request_register_face",
+              type: "POST",
+              data: fd,
+              enctype: 'multipart/form-data',
+              processData: false,  // tell jQuery not to process the data
+              contentType: false   // tell jQuery not to set contentType
+            }).done(function( data ) {
+                //debug console
+                console.log("Response Output:");
+                console.log(data);
+                var pars = JSON.parse(data);
+                if(pars["result"] != -1) {
+                    //regitPersonPanel(pars["id"], pars["thumbnail"], pars["name"], pars["kind"]);
+                    alert("Success!");
+                } else {
+                    alert("Does Not exist the face");
+                }
+            });
+            return false;
+
+        }
+    </script>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid" style="font-size: 200%">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/" style="font-size: 120%"> TEAM OLD BOY </a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="/"> 카메라 사진 확인 </a></li>
+            <li><a href="/state"> 등록 현황 </a></li>
+            <li><a href="/regit"> 등록 하기 </a></li>
+            <li><a href="/findToFile"> 파일로 찾기 </a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <h1>Registration</h1>
+    <br>
+    <form>
+        <input type="radio" name="c1" value=1>Missing
+        <input type="radio" name="c1" value=2>Wanted
+        <input type="radio" name="c1" value=0>Normal
+    </form>
+    <form method="post" id="files" name="files" enctype="multipart/form-data" onsubmit="return submitForm();">
+        <input id="fileUpload" type="file" name="file[]" multiple />
+        <br>
+        Name : <input id="name" type="text" />
+        <br>
+        <input type="submit" value="Registration" />
+    </form>
+    <label>Image Files</label><br>
+    <div id="image-holder"></div>
+    <script>
+        // file selection
+
+        var host = "http://175.126.82.175:20100/";
+        var kind_pic = {"-1" : "black", "0" : "green", "1" : "blue", "2" : "red"};
+        var kind_set = {"-1" : "Unknown", "0" : "Normal", "1" : "Missing", "2" : "Wanted"}
+
+        var countFiles;
+        var file_list;
+        var name;
+        $("#name").on('change', function() {
+            name = $(this)[0].value;
+        })
+        $("#fileUpload").on('change', function () {
+
+            //Get count of selected files
+            var imgPath = $(this)[0].value;
+            var extn = imgPath.substring(imgPath.lastIndexOf('.') + 1).toLowerCase();
+            var image_holder = $("#image-holder");
+
+            countFiles = $(this)[0].files.length;
+            file_list = new Array(countFiles);
+
+            image_holder.empty();
+
+            if (extn == "gif" || extn == "png" || extn == "jpg" || extn == "jpeg") {
+                if (typeof (FileReader) != "undefined") {
+                    //loop for each file selected for uploaded.
+                    for (var i = 0; i < countFiles; i++) {
+
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                            $("<img />", {
+                                "src": e.target.result,
+                                    "class": "thumb-image"
+                            }).width(150).height(150).appendTo(image_holder);
+                        }
+                        image_holder.show();
+                        reader.readAsDataURL($(this)[0].files[i]);
+                    }
+
+                } else {
+                    alert("This browser does not support FileReader.");
+                }
+            } else {
+                alert("Pls select only images");
+            }
+        });
+    </script>
+
+</body>
+
+</html>
