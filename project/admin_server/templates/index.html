@@ -1,143 +1,145 @@
 <html>
 <head>
-    <meta charset="utd-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Old Boy Team</title>
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script>
-    <script type="text/javascript" charset="utf-8"></script>
-
-    <!-- 합쳐지고 최소화된 최신 CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-    <!-- 부가적인 테마 -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.2/cerulean/bootstrap.min.css" type="text/css">
-    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
-    <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-
-    <title>Image Upload Form</title>
-    <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 </head>
-<style>
-    body { padding-top: 70px; }
-</style>
-<body>
-    <h1>Camera devices</h1>
-    <br>
-    <div class="container">
-        <div id="device_panel"class="row">
 
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="back_pink col-lg-6 col-md-6 col-sm-6 col-xs-12" onClick="window.location='/';">
+            <p style="font-family:Cursive; font-size:13pt; font-style:oblique">Main home</p>
+        </div>
+        <div class="back_violet col-lg-3 col-md-3 col-sm-3 col-xs-12" onClick="window.location='/cameraStream';">
+            <p style="font-family:Cursive; font-size:13pt; font-style:oblique">Camera Stream</p>
+        </div>
+        <div class="back_skyblue col-lg-3 col-md-3 col-sm-3 col-xs-12" onClick="window.location='/state';">
+            <p style="font-family:Cursive; font-size:13pt; font-style:oblique">Registered Person</p>
         </div>
     </div>
 
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container-fluid" style="font-size: 200%">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="/" style="font-size: 120%"> TEAM OLD BOY </a>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="back_gold col-lg-3 col-md-3 col-sm-3 col-xs-12" onClick="window.location='/regit';">
+            <p style="font-family:Cursive; font-size:13pt; font-style:oblique">Registration</p>
         </div>
-
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="/"> 카메라 사진 확인 </a></li>
-            <li><a href="/state"> 등록 현황 </a></li>
-            <li><a href="/regit"> 등록 하기 </a></li>
-            <li><a href="/findToFile"> 파일로 찾기 </a></li>
-          </ul>
+        <div class="back_deepskyblue col-lg-6 col-md-6 col-sm-6 col-xs-12" onClick="window.location='/findToFile';">
+            <p style="font-family:Cursive; font-size:13pt; font-style:oblique">Find to File</p>
         </div>
-      </div>
-    </nav>
+        <div class="back_white col-lg-3 col-md-3 col-sm-3 col-xs-12 text-center">
+            <p style="font-family: monospace; font-size:15pt">Old Boy Team?</p>
+            <span class="open_icon" style="cursor:pointer">▼</span>
+            <div class="hidden_text" style="width:100%; height:175px; background-color:rgba(0,0,0,0.1); display:none;">
+                <p style="font-family:Verdana; font-size:13pt">Mentor</p>한대희<br>
+                <br><p style="font-family:Verdana; font-size:13pt">Mentee</p>정용은<br>지해성<br>김정현
+            </div>
+        </div>
+    </div>
+</div>
 
-    <script>
-        // first data send for already registered person
-        $( document ).ready(function() {
-            var formData = new FormData();
-            formData.append("data", '{ }');
-            $.ajax({
-                url: host + "request_data",
-                type: "POST",
-                data: formData,
-                processData: false,  // tell jQuery not to process the data
-                contentType: false   // tell jQuery not to set contentType
-            }).done(function( data ) {
-                // debug console
-                console.log("Response Output:");
-                console.log(data);
-
-                var pars = JSON.parse(data);
-                var device_datas = pars["device_datas"];
-
-                // Connected devices info
-                for(var i = 0; i < device_datas.length; i++) {
-                    devicePicturePanel(device_datas[i]['device_id'], device_datas[i]['image']);
-                }
-            });
-        });
-    </script>
+  <div class="container-fluid back_green text-center" style="height:100%;">
+  <h2>What is the kind of this project?</h2>
+  <div class="row">
+    <div class="col-sm-4">
+      <h4><p>Wanted Criminal</p></h4>
+      <img src="birds1.jpg" alt="Image">
+    </div>
+    <div class="col-sm-4">
+      <h4><p>Find Missing child</p></h4>
+      <img src="birds2.jpg" alt="Image">
+    </div>
+    <div class="col-sm-4">
+      <h4><p>Register Customs</p></h4>
+      <img src="birds3.jpg" alt="Image">
+    </div>
+  </div>
+</div>
 
 </body>
 
 <script>
-    var host = "http://175.126.82.175:20100/";
-    var kind_pic = {"-1" : "black", "0" : "green", "1" : "blue", "2" : "red"};
-    var kind_set = {"-1" : "Unknown", "0" : "Normal", "1" : "Missing", "2" : "Wanted"}
-
-    function devicePicturePanel(id, thumbnail) {
-        var device_id = 'device_' + id;
-        var thumb_id = 'device_thumb_' + id;
-        if(document.getElementById(device_id) == null) {
-            // Not exist - make new panel
-            $("#device_panel").append('<div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">' +
-                '<div class="panel panel-info" style="font-size: 150%">' +
-                    '<div id="' + device_id + '" class="panel-heading text-center">' +
-                        device_id +
-                    '</div>' +
-                    '<div class="panel-body" style="text-align: center">' +
-                        '<img src="' + thumbnail + '" id="' + thumb_id +
-                            '" width="240px" height="240px" style="max-width:100%">' +
-                        '</img>' +
-                    '</div>' +
-                '</div>' +
-            '</div>');
-        } else {
-            //Already exist - change img thumbnail
-            $('<img src="' + thumbnail + '" id="' + thumb_id +
-                    '" width="200px" height="200px" style="max-width:100%"></img>').replaceAll("#" + thumb_id);
-        }
-    }
-
-    function createSocket(address, name) {
-        socket = new WebSocket(address);
-        socketName = name;
-        socket.binaryType = "arraybuffer";
-        socket.onopen = function() {
-            console.log("Connected")
-        }
-        socket.onmessage = function(e) {
-            j = JSON.parse(e.data)
-            console.log(j["content"]["device_id"]);
-            if(j.type == "image") {
-                devicePicturePanel(j["content"]["device_id"], j['content']['image']);
-                //device panel process
-                $("#device_image").html(
-                    "<img src='" + j['content']['image'] + "' width='430px'></img>"
-                )
-            }
-        }
-        socket.onclose = function(e) {
-            if (e.target == socket) {
-                $("#serverStatus").html("Disconnected.")
-            }
-        }
-    }
-    $("#detectedFaces").html("");
-    createSocket("ws://175.126.82.175:20100/ws", "Local");
+    $(function(){
+        $(".open_icon").click(function(){
+            $(".hidden_text").slideToggle(800);
+        });
+    });
 </script>
+
+<style>
+.back_green {
+    background-color: #ffffff;
+    border: 5px solid;
+    /*background-color: #1abc9c; /* Green */
+    color: #000000;
+}
+.back_darkblue {
+    background-color: #474e5d; /* Dark Blue */
+    color: #ffffff;
+    border: 5px solid white;
+    padding-top: 100px;
+    padding-bottom: 100px;
+}
+.back_white {
+    background-color: #ffffff; /* White */
+    color: #555555;
+    padding-top: 10px;
+}
+.back_violet {
+    background-color: #9e109e; /* Violet */
+    color: #ffffff;
+    border: 5px solid white;
+    padding-top: 200px;
+    padding-bottom: 5px;
+    vertical-align:text-bottom; transition:all 0.8s, color 0.3s 0.3s;
+    cursor: pointer;
+}
+.back_pink {
+    background-color: #DB1859; /* Pink */
+    color: #ffffff;
+    border: 5px solid white;
+    padding-top: 200px;
+    padding-bottom: 5px;
+    vertical-align:text-bottom; transition:all 0.8s, color 0.3s 0.3s;
+    cursor: pointer;
+}
+.back_skyblue {
+    background-color: #87ceeb; /* Skyblue */
+    color: #ffffff;
+    border: 5px solid white;
+    padding-top: 200px;
+    padding-bottom: 5px;
+    vertical-align:text-bottom; transition:all 0.8s, color 0.3s 0.3s;
+    cursor: pointer;
+}
+.back_deepskyblue {
+    background-color: #00bfff; /* DeepSkyblue */
+    color: #ffffff;
+    border: 5px solid white;
+    padding-top: 200px;
+    padding-bottom: 5px;
+    vertical-align:text-bottom; transition:all 0.8s, color 0.3s 0.3s;
+    cursor: pointer;
+}
+.back_gold {
+    background-color: #ffe033; /* Gold */
+    color: #ffffff;
+    border: 5px solid white;
+    padding-top: 200px;
+    padding-bottom: 5px;
+    vertical-align:text-bottom; transition:all 0.5s, color 0.3s 0.3s;
+    cursor: pointer;
+}
+.back_gold:hover, .back_pink:hover, .back_violet:hover, .back_skyblue:hover, .back_deepskyblue:hover {
+    box-shadow:1000px 1000px 1000px 1000px rgba(0,0,0,0.3) inset;
+}
+
+
+</style>
 
 </html>

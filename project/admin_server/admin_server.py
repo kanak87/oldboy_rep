@@ -33,5 +33,10 @@ def state():
 	templateData = {'title' : 'Face Detector'}
 	return render_template('state.html', ** templateData)
 
+@app.route('/cameraStream')
+def cameraStream():
+	templateData = {'title' : 'Face Detector'}
+	return render_template('cameraStream.html', ** templateData)
+
 if __name__ == "__main__":
     app.run(port=5000, debug=True)
