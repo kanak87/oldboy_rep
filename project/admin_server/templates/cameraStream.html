@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utd-8">
@@ -24,10 +23,13 @@
     body { padding-top: 70px; }
 </style>
 <body>
-    <div id="registered-image-holder">
-        <h1>Registered Person</h1>
-    </div>
+    <h1>Camera devices</h1>
     <br>
+    <div class="container">
+        <div id="device_panel"class="row">
+
+        </div>
+    </div>
 
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container-fluid" style="font-size: 200%">
@@ -52,12 +54,6 @@
       </div>
     </nav>
 
-    <div class="container-fluid">
-        <div id="registered_panel" class="row">
-
-        </div>
-    </div>
-
     <script>
         // first data send for already registered person
         $( document ).ready(function() {
@@ -76,15 +72,13 @@
 
                 var pars = JSON.parse(data);
                 var device_datas = pars["device_datas"];
-                var face = pars["faces"];
 
-                // registered person info
-                for(var i = 0; i < face.length; i++) {
-                    regitPersonPanel(face[i]["id"], face[i]["thumbnail"], face[i]["name"], face[i]["kind"]);
+                // Connected devices info
+                for(var i = 0; i < device_datas.length; i++) {
+                    devicePicturePanel(device_datas[i]['device_id'], device_datas[i]['image']);
                 }
             });
         });
-
     </script>
 
 </body>
@@ -94,62 +88,28 @@
     var kind_pic = {"-1" : "black", "0" : "green", "1" : "blue", "2" : "red"};
     var kind_set = {"-1" : "Unknown", "0" : "Normal", "1" : "Missing", "2" : "Wanted"}
 
-    function regitPersonPanel(id, thumb, name, kind) {
-        var regit_id = "regit_id_" + id;
-        var thumb_id = "thumb_id_" + id;
-        var name_id = name;
-        var kindStr = String(kind);
-
-        if(document.getElementById(regit_id) == null) {
-            $("#registered_panel").append('<div class="col-lg-2 col-md-2 col-sm-3 col-xs-3">' +
-                '<div class="panel panel-info" style="font-size: 130%">' +
-                    '<div id="" class="panel-heading text-center">' +
-                        kind_set[kind] +
-                    '<span class="pull-right clickable" data-effect="fadeOut" data-id="' + name + '">' +
-                    '<i class="fa fa-times"></i></span></div>' +
-                    '<div class="panel-body" style="text-align: center">' +
-                        '<div class="div">' +
-                    '<img src="' + host + thumb + '" data-id="' + thumb_id +
-                            '" width="150px" height="150px" style="max-width:100%;border:2px solid ' + kind_pic[kindStr] + ';">' +
-                        '</div>' +
+    function devicePicturePanel(id, thumbnail) {
+        var device_id = 'device_' + id;
+        var thumb_id = 'device_thumb_' + id;
+        if(document.getElementById(device_id) == null) {
+            // Not exist - make new panel
+            $("#device_panel").append('<div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">' +
+                '<div class="panel panel-info" style="font-size: 150%">' +
+                    '<div id="' + device_id + '" class="panel-heading text-center">' +
+                        device_id +
                     '</div>' +
-                    '<div class="panel-footer" style="text-align: center">' +
-                        '<div id="' + name_id + '" style="text-align: center">' + name_id +
+                    '<div class="panel-body" style="text-align: center">' +
+                        '<img src="' + thumbnail + '" id="' + thumb_id +
+                            '" width="240px" height="240px" style="max-width:100%">' +
+                        '</img>' +
                     '</div>' +
                 '</div>' +
             '</div>');
+        } else {
+            //Already exist - change img thumbnail
+            $('<img src="' + thumbnail + '" id="' + thumb_id +
+                    '" width="200px" height="200px" style="max-width:100%"></img>').replaceAll("#" + thumb_id);
         }
-
-        $(function(){
-            $('.clickable').on('click',function(){
-                var effect = $(this).data('effect');
-                var present_name = $(this).data('id');
-                $(this).closest('.panel')[effect]();
-
-                // delete_request message
-                var formData = new FormData();
-                var req_msg = '{ "name" : "' + present_name +'" }';
-
-                // use only id, not name.
-                if(present_name == name) {
-                    formData.append("data", req_msg);
-                    $.ajax({
-                        url: host + "request_unregister_face",
-                        type: "POST",
-                        data: formData,
-                        processData: false,  // tell jQuery not to process the data
-                        contentType: false   // tell jQuery not to set contentType
-                    }).done(function( data ) {
-                        console.log("Response Output:");
-                        console.log(data);
-
-                        var pars = JSON.parse(data);
-                        console.log(pars);
-                    });
-                }
-            })
-        });
-
     }
 
     function createSocket(address, name) {
