@@ -6,7 +6,8 @@
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet"
+          type="text/css">
 </head>
 
 <body>
@@ -17,7 +18,8 @@
                 <p class="main_font">Main home</p>
             </div>
             <div class="back_pink">
-                <span><i style="color:black; font-size:50pt; margin-left: 45%; padding-top: 90px;" class="fa fa-fw fa-home"></i></span>
+                <span><i class="fa fa-fw fa-home icon_style_6"></i></span>
+
                 <p class="main_font">Main home</p>
             </div>
         </div>
@@ -26,7 +28,8 @@
                 <p class="main_font">Camera Stream</p>
             </div>
             <div class="back_violet">
-                <span><i style="color:black; font-size:50pt; margin-left: 35%; padding-top: 90px;" class="fa fa-fw fa-camera"></i></span>
+                <span><i class="fa fa-fw fa-camera icon_style_3"></i></span>
+
                 <p class="main_font">Camera Stream</p>
             </div>
         </div>
@@ -35,7 +38,8 @@
                 <p class="main_font">Registered Person</p>
             </div>
             <div class="back_skyblue">
-                <span><i style="color:black; font-size:50pt; margin-left: 35%; padding-top: 90px;" class="fa fa-fw fa-user-secret"></i></span>
+                <span><i class="fa fa-fw fa-user-secret icon_style_3"></i></span>
+
                 <p class="main_font">Registered Person</p>
             </div>
         </div>
@@ -50,7 +54,8 @@
                 <p class="main_font">Registration</p>
             </div>
             <div class="back_gold">
-                <span><i style="color:black; font-size:50pt; margin-left: 35%; padding-top: 90px;" class="fa fa-fw fa-user-plus"></i></span>
+                <span><i class="fa fa-fw fa-user-plus icon_style_3"></i></span>
+
                 <p class="main_font">Registration</p>
             </div>
         </div>
@@ -59,133 +64,166 @@
                 <p class="main_font">Find to File</p>
             </div>
             <div class="back_deepskyblue">
-                <span><i style="color:black; font-size:50pt; margin-left: 45%; padding-top: 90px;" class="fa fa-fw fa-map-pin"></i></span>
+                <span><i class="fa fa-fw fa-map-pin icon_style_6"></i></span>
+
                 <p class="main_font">Find to File</p>
             </div>
         </div>
         <div class="back_white col-lg-3 col-md-3 col-sm-3 col-xs-12 text-center">
             <p style="font-family: monospace; font-size:15pt">Old Boy Team?</p>
             <span class="open_icon" style="cursor:pointer">▼</span>
+
             <div class="hidden_text" style="width:100%; height:175px; background-color:rgba(0,0,0,0.1); display:none;">
                 <p style="font-family:Verdana; font-size:13pt">Mentor</p>한대희<br>
-                <br><p style="font-family:Verdana; font-size:13pt">Mentee</p>정용은<br>지해성<br>김정현
+                <br>
+
+                <p style="font-family:Verdana; font-size:13pt">Mentee</p>정용은<br>지해성<br>김정현
             </div>
         </div>
     </div>
 </div>
 
-  <div class="container-fluid intro_background text-center" style="height:100%;">
-  <h2>What is the kind of this project?</h2>
-  <div class="row">
-    <div class="col-sm-4">
-      <h4><p>Wanted Criminal</p></h4>
-      <img src="birds1.jpg" alt="Image">
+<div class="container-fluid intro_background text-center" style="height:100%;">
+    <h2>What is the kind of this project?</h2>
+
+    <div class="row">
+        <div class="col-sm-4">
+            <h4><p>Wanted Criminal</p></h4>
+            <img src="birds1.jpg" alt="Image">
+        </div>
+        <div class="col-sm-4">
+            <h4><p>Find Missing child</p></h4>
+            <img src="birds2.jpg" alt="Image">
+        </div>
+        <div class="col-sm-4">
+            <h4><p>Register Customs</p></h4>
+            <img src="birds3.jpg" alt="Image">
+        </div>
     </div>
-    <div class="col-sm-4">
-      <h4><p>Find Missing child</p></h4>
-      <img src="birds2.jpg" alt="Image">
-    </div>
-    <div class="col-sm-4">
-      <h4><p>Register Customs</p></h4>
-      <img src="birds3.jpg" alt="Image">
-    </div>
-  </div>
 </div>
 
 </body>
 
 <script>
-    $(function(){
-        $(".open_icon").click(function(){
+    $(function () {
+        $(".open_icon").click(function () {
             $(".hidden_text").slideToggle(800);
         });
     });
 </script>
 
 <style>
-.main_font {
-    font-family:Cursive;
-    font-size:13pt;
-    font-style:oblique;
-    margin-left:15px;
-    vertical-align:text-bottom;
-    padding-top: 50px;
-    padding-bottom: 5px;
-}
-.intro_background {
-    background-color: #ffffff;
-    border: 5px solid;
-    /*background-color: #1abc9c; /* Green */
-    color: #000000;
-    margin-top:5px;
-}
-.back_darkblue {
-    background-color: #474e5d; /* Dark Blue */
-    color: #ffffff;
-    border: 5px solid white;
-    padding-top: 100px;
-    padding-bottom: 100px;
-}
-.back_white {
-    background-color: #ffffff; /* White */
-    color: #555555;
-    padding-top: 10px;
-}
-.front_violet, .front_pink, .front_skyblue, .front_deepskyblue, .front_gold,
-.back_violet, .back_pink, .back_skyblue, .back_deepskyblue, .back_gold {
+    .main_font {
+        font-family: Cursive;
+        font-size: 13pt;
+        font-style: oblique;
+        margin-left: 15px;
+        vertical-align: text-bottom;
+        padding-top: 50px;
+        padding-bottom: 5px;
+    }
 
-    cursor: pointer;
+    .intro_background {
+        background-color: #ffffff;
+        border: 5px solid;
+        /*background-color: #1abc9c; /* Green */
+        color: #000000;
+        margin-top: 5px;
+    }
 
-    -webkit-backface-visibility: hidden;
+    .icon_style_6, .icon_style_3 {
+        color: black;
+        font-size: 50pt;
+        margin-left: 35%;
+        padding-top: 90px
+    }
+
+    .icon_style_6 {
+        margin-left: 45%;
+    }
+
+    .icon_style_3 {
+        margin-left: 35%;
+    }
+
+    .back_darkblue {
+        background-color: #474e5d; /* Dark Blue */
+        color: #ffffff;
+        border: 5px solid white;
+        padding-top: 100px;
+        padding-bottom: 100px;
+    }
+
+    .back_white {
+        background-color: #ffffff; /* White */
+        color: #555555;
+        padding-top: 10px;
+    }
+
+    .front_violet, .front_pink, .front_skyblue, .front_deepskyblue, .front_gold,
+    .back_violet, .back_pink, .back_skyblue, .back_deepskyblue, .back_gold {
+
+        cursor: pointer;
+
+        -webkit-backface-visibility: hidden;
         backface-visibility: hidden;
-    -webkit-transition: -webkit-transform 0.3s;
+        -webkit-transition: -webkit-transform 0.3s;
         transition: transform 0.3s;
-}
-.front_violet, .front_pink, .front_skyblue, .front_deepskyblue, .front_gold {
-    color: #ffffff;
-    border: 5px solid white;
-    position:absolute;
-    top:0;
-    left:0;
-    right:0;
-    width:100%;
-    padding-top: 150px;
-    padding-bottom: 5px;
-}
-.back_violet, .back_pink, .back_skyblue, .back_deepskyblue, .back_gold {
-    color: #000000;
-    margin-top: 15px ;
-    box-shadow: -10px -10px 10px rgba(0,0,0,0.3);
-    -webkit-transform: rotateY(-180deg);
+    }
+
+    .front_violet, .front_pink, .front_skyblue, .front_deepskyblue, .front_gold {
+        color: #ffffff;
+        border: 5px solid white;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        padding-top: 150px;
+        padding-bottom: 5px;
+    }
+
+    .back_violet, .back_pink, .back_skyblue, .back_deepskyblue, .back_gold {
+        color: #000000;
+        margin-top: 15px;
+        box-shadow: -10px -10px 10px rgba(0, 0, 0, 0.3);
+        -webkit-transform: rotateY(-180deg);
         transform: rotateY(-180deg);
-    padding-bottom: 5px;
-}
-.front_violet, .back_violet {
-    background-color: #9e109e; /* Violet */
-}
-.front_pink, .back_pink {
-    background-color: #DB1859; /* Pink */
-}
-.front_skyblue, .back_skyblue {
-    background-color: #87ceeb; /* Skyblue */
-}
-.front_deepskyblue, .back_deepskyblue {
-    background-color: #00bfff; /* DeepSkyblue */
-}
-.front_gold, .back_gold {
-    background-color: #ffe033; /* Gold */
-}
-.effect_hover:hover .front_gold, .effect_hover:hover .front_pink, .effect_hover:hover .front_violet,
-.effect_hover:hover .front_skyblue, .effect_hover:hover .front_deepskyblue {
-    -webkit-transform: rotateY(-180deg);
-          transform: rotateY(-180deg);
-    /*box-shadow:1000px 1000px 1000px 1000px rgba(0,0,0,0.3) inset;*/
-}
-.effect_hover:hover .back_gold, .effect_hover:hover .back_pink, .effect_hover:hover .back_violet,
-.effect_hover:hover .back_skyblue, .effect_hover:hover .back_deepskyblue {
-    -webkit-transform: rotateY(0deg);
-          transform: rotateY(0deg);
-}
+        padding-bottom: 5px;
+    }
+
+    .front_violet, .back_violet {
+        background-color: #9e109e; /* Violet */
+    }
+
+    .front_pink, .back_pink {
+        background-color: #DB1859; /* Pink */
+    }
+
+    .front_skyblue, .back_skyblue {
+        background-color: #87ceeb; /* Skyblue */
+    }
+
+    .front_deepskyblue, .back_deepskyblue {
+        background-color: #00bfff; /* DeepSkyblue */
+    }
+
+    .front_gold, .back_gold {
+        background-color: #ffe033; /* Gold */
+    }
+
+    .effect_hover:hover .front_gold, .effect_hover:hover .front_pink, .effect_hover:hover .front_violet,
+    .effect_hover:hover .front_skyblue, .effect_hover:hover .front_deepskyblue {
+        -webkit-transform: rotateY(-180deg);
+        transform: rotateY(-180deg);
+        /*box-shadow:1000px 1000px 1000px 1000px rgba(0,0,0,0.3) inset;*/
+    }
+
+    .effect_hover:hover .back_gold, .effect_hover:hover .back_pink, .effect_hover:hover .back_violet,
+    .effect_hover:hover .back_skyblue, .effect_hover:hover .back_deepskyblue {
+        -webkit-transform: rotateY(0deg);
+        transform: rotateY(0deg);
+    }
 </style>
 
 </html>

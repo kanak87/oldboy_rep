@@ -4,113 +4,161 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script>
+    <script type="text/javascript"
+            src="http://cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script>
     <script type="text/javascript" charset="utf-8"></script>
 
     <!-- 합쳐지고 최소화된 최신 CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
     <!-- 부가적인 테마 -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.2/cerulean/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.2/cerulean/bootstrap.min.css"
+          type="text/css">
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
     <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet"
+          type="text/css">
 
     <title>Image Upload Form</title>
     <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
 </head>
-<style>
-    body { padding-top: 70px; padding-left: 20px; }
-</style>
+
 <body>
-    <h1><p style="padding-left:10px; border-left:5px solid #9e109e;">Camera devices</p></h1>
+<div class="container-fluid">
+    <div class="row">
+        <div class="effect_hover col-lg-6 col-md-6 col-sm-6 col-xs-12" onClick="window.location='/';">
+            <div class="front_pink">
+                <p class="main_font">Main home</p>
+            </div>
+            <div class="back_pink">
+                <span><i class="fa fa-fw fa-home icon_style_6"></i></span>
 
-    <div class="text-center" id ="loading_div">
-        <br>
-        loading...<br>
-        <div id="loading">●</div>
-    </div>
+                <p class="main_font">Main home</p>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+             style="margin-top: 5px; border: 5px solid black; border-bottom: 0px;">
+            <span><i class="fa fa-fw fa-camera icon_style_3"></i></span>
 
-    <div class="container">
-        <div id="device_panel"class="row">
+            <p class="main_font">Camera Stream</p>
 
+        </div>
+        <div class="effect_hover col-lg-3 col-md-3 col-sm-3 col-xs-12" onClick="window.location='/state';">
+            <div class="front_skyblue">
+                <p class="main_font">Registered Person</p>
+            </div>
+            <div class="back_skyblue">
+                <span><i class="fa fa-fw fa-user-secret icon_style_3"></i></span>
+
+                <p class="main_font">Registered Person</p>
+            </div>
         </div>
     </div>
+</div>
+<hr>
+<h1><p style="padding-left:10px; color: #666666; border-left:5px solid #9e109e; margin-left:10px;">Camera devices</p></h1>
+<br>
+<div class="text-center" id="loading_div">
+    <br>
+    loading...<br>
 
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container-fluid" style="font-size: 200%">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="/" style="font-size: 120%"> TEAM OLD BOY </a>
+    <div id="loading">●</div>
+</div>
+
+<div class="container">
+    <div id="device_panel" class="row">
+
+    </div>
+</div>
+<hr>
+<div class="container-fluid">
+    <div class="row">
+        <div class="effect_hover col-lg-3 col-md-3 col-sm-3 col-xs-12" onClick="window.location='/regit';">
+            <div class="front_gold">
+                <p class="main_font">Registration</p>
+            </div>
+            <div class="back_gold">
+                <span><i class="fa fa-fw fa-user-plus icon_style_3"></i></span>
+
+                <p class="main_font">Registration</p>
+            </div>
         </div>
+        <div class="effect_hover col-lg-6 col-md-6 col-sm-6 col-xs-12" onClick="window.location='/findToFile';">
+            <div class="front_deepskyblue">
+                <p class="main_font">Find to File</p>
+            </div>
+            <div class="back_deepskyblue">
+                <span><i class="fa fa-fw fa-map-pin icon_style_6"></i></span>
 
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="/cameraStream"> 카메라 사진 확인 </a></li>
-            <li><a href="/state"> 등록 현황 </a></li>
-            <li><a href="/regit"> 등록 하기 </a></li>
-            <li><a href="/findToFile"> 파일로 찾기 </a></li>
-          </ul>
+                <p class="main_font">Find to File</p>
+            </div>
         </div>
-      </div>
-    </nav>
+        <div class="back_white col-lg-3 col-md-3 col-sm-3 col-xs-12 text-center">
+            <p style="font-family: monospace; font-size:15pt">Old Boy Team?</p>
+            <span class="open_icon" style="cursor:pointer">▼</span>
 
-    <script>
-        // first data send for already registered person
-        $( document ).ready(function() {
-            var formData = new FormData();
-            formData.append("data", '{ }');
-            $.ajax({
-                url: host + "request_data",
-                type: "POST",
-                data: formData,
-                processData: false,  // tell jQuery not to process the data
-                contentType: false   // tell jQuery not to set contentType
-            }).done(function( data ) {
-                // debug console
-                console.log("Response Output:");
-                console.log(data);
+            <div class="hidden_text" style="width:100%; height:175px; background-color:rgba(0,0,0,0.1); display:none;">
+                <p style="font-family:Verdana; font-size:13pt">Mentor</p>한대희<br>
+                <br>
 
-                var pars = JSON.parse(data);
-                var device_datas = pars["device_datas"];
-                $("#loading_div").remove();
-                // Connected devices info
-                for(var i = 0; i < device_datas.length; i++) {
-                    devicePicturePanel(device_datas[i]['device_id'], device_datas[i]['image']);
-                }
-            });
+                <p style="font-family:Verdana; font-size:13pt">Mentee</p>정용은<br>지해성<br>김정현
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // first data send for already registered person
+    $(document).ready(function () {
+        var formData = new FormData();
+        formData.append("data", '{ }');
+        $.ajax({
+            url: host + "request_data",
+            type: "POST",
+            data: formData,
+            processData: false,  // tell jQuery not to process the data
+            contentType: false   // tell jQuery not to set contentType
+        }).done(function (data) {
+            // debug console
+            console.log("Response Output:");
+            console.log(data);
+
+            var pars = JSON.parse(data);
+            var device_datas = pars["device_datas"];
+            $("#loading_div").remove();
+            // Connected devices info
+            for (var i = 0; i < device_datas.length; i++) {
+                devicePicturePanel(device_datas[i]['device_id'], device_datas[i]['image']);
+            }
         });
-    </script>
+    });
+</script>
 
 </body>
 
 <script>
     var host = "http://175.126.82.175:20100/";
-    var kind_pic = {"-1" : "black", "0" : "green", "1" : "blue", "2" : "red"};
-    var kind_set = {"-1" : "Unknown", "0" : "Normal", "1" : "Missing", "2" : "Wanted"}
+    var kind_pic = {"-1": "black", "0": "green", "1": "blue", "2": "red"};
+    var kind_set = {"-1": "Unknown", "0": "Normal", "1": "Missing", "2": "Wanted"}
 
     function devicePicturePanel(id, thumbnail) {
         var device_id = 'device_' + id;
         var thumb_id = 'device_thumb_' + id;
-        if(document.getElementById(device_id) == null) {
+        if (document.getElementById(device_id) == null) {
             // Not exist - make new panel
             $("#device_panel").append('<div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">' +
-                '<div class="panel panel-info" style="font-size: 150%">' +
+                    '<div class="panel panel-info" style="font-size: 150%">' +
                     '<div id="' + device_id + '" class="panel-heading text-center">' +
-                        device_id +
+                    device_id +
                     '</div>' +
                     '<div class="panel-body" style="text-align: center">' +
-                        '<img src="' + thumbnail + '" id="' + thumb_id +
-                            '" width="240px" height="240px" style="max-width:100%">' +
-                        '</img>' +
+                    '<img src="' + thumbnail + '" id="' + thumb_id +
+                    '" width="240px" height="240px" style="max-width:100%">' +
+                    '</img>' +
                     '</div>' +
-                '</div>' +
-            '</div>');
+                    '</div>' +
+                    '</div>');
         } else {
             //Already exist - change img thumbnail
             $('<img src="' + thumbnail + '" id="' + thumb_id +
@@ -122,21 +170,21 @@
         socket = new WebSocket(address);
         socketName = name;
         socket.binaryType = "arraybuffer";
-        socket.onopen = function() {
+        socket.onopen = function () {
             console.log("Connected")
         }
-        socket.onmessage = function(e) {
+        socket.onmessage = function (e) {
             j = JSON.parse(e.data)
             console.log(j["content"]["device_id"]);
-            if(j.type == "image") {
+            if (j.type == "image") {
                 devicePicturePanel(j["content"]["device_id"], j['content']['image']);
                 //device panel process
                 $("#device_image").html(
-                    "<img src='" + j['content']['image'] + "' width='430px'></img>"
+                        "<img src='" + j['content']['image'] + "' width='430px'></img>"
                 )
             }
         }
-        socket.onclose = function(e) {
+        socket.onclose = function (e) {
             if (e.target == socket) {
                 $("#serverStatus").html("Disconnected.")
             }
@@ -151,17 +199,135 @@
         display: inline-block;
         width: 50px;
         height: 50px;
-        border: 3px solid rgba(255,255,255,0.3);
+        border: 3px solid rgba(255, 255, 255, 0.3);
         border-radius: 50%;
         border-top-color: #fff;
         animation: spin 1s ease-in-out infinite;
         -webkit-animation: spin 1s ease-in-out infinite;
     }
+
     @keyframes spin {
-        to { -webkit-transform: rotate(360deg); }
+        to {
+            -webkit-transform: rotate(360deg);
+        }
     }
+
     @-webkit-keyframes spin {
-        to { -webkit-transform: rotate(360deg); }
+        to {
+            -webkit-transform: rotate(360deg);
+        }
+    }
+
+    .main_font {
+        font-family: Cursive;
+        font-size: 13pt;
+        font-style: oblique;
+        margin-left: 15px;
+        vertical-align: text-bottom;
+        padding-top: 50px;
+        padding-bottom: 5px;
+    }
+
+    .intro_background {
+        background-color: #ffffff;
+        border: 5px solid;
+        /*background-color: #1abc9c; /* Green */
+        color: #000000;
+        margin-top: 5px;
+    }
+
+    .icon_style_6, .icon_style_3 {
+        color: black;
+        font-size: 50pt;
+        margin-left: 35%;
+        padding-top: 90px
+    }
+
+    .icon_style_6 {
+        margin-left: 45%;
+    }
+
+    .icon_style_3 {
+        margin-left: 35%;
+    }
+
+    .back_darkblue {
+        background-color: #474e5d; /* Dark Blue */
+        color: #ffffff;
+        border: 5px solid white;
+        padding-top: 100px;
+        padding-bottom: 100px;
+    }
+
+    .back_white {
+        background-color: #ffffff; /* White */
+        color: #555555;
+        padding-top: 10px;
+    }
+
+    .front_violet, .front_pink, .front_skyblue, .front_deepskyblue, .front_gold,
+    .back_violet, .back_pink, .back_skyblue, .back_deepskyblue, .back_gold {
+
+        cursor: pointer;
+
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        -webkit-transition: -webkit-transform 0.3s;
+        transition: transform 0.3s;
+    }
+
+    .front_violet, .front_pink, .front_skyblue, .front_deepskyblue, .front_gold {
+        color: #ffffff;
+        border: 5px solid white;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        padding-top: 150px;
+        padding-bottom: 5px;
+    }
+
+    .back_violet, .back_pink, .back_skyblue, .back_deepskyblue, .back_gold {
+        color: #000000;
+        margin-top: 15px;
+        box-shadow: -10px -10px 10px rgba(0, 0, 0, 0.3);
+        -webkit-transform: rotateY(-180deg);
+        transform: rotateY(-180deg);
+        padding-bottom: 5px;
+    }
+
+    .front_violet, .back_violet {
+        background-color: #9e109e; /* Violet */
+    }
+
+    .front_pink, .back_pink {
+        background-color: #DB1859; /* Pink */
+    }
+
+    .front_skyblue, .back_skyblue {
+        background-color: #87ceeb; /* Skyblue */
+    }
+
+    .front_deepskyblue, .back_deepskyblue {
+        background-color: #00bfff; /* DeepSkyblue */
+    }
+
+    .front_gold, .back_gold {
+        background-color: #ffe033; /* Gold */
+    }
+
+    .effect_hover:hover .front_gold, .effect_hover:hover .front_pink, .effect_hover:hover .front_violet,
+    .effect_hover:hover .front_skyblue, .effect_hover:hover .front_deepskyblue {
+        -webkit-transform: rotateY(-180deg);
+        transform: rotateY(-180deg);
+        /*box-shadow:1000px 1000px 1000px 1000px rgba(0,0,0,0.3) inset;*/
+    }
+
+    .effect_hover:hover .back_gold, .effect_hover:hover .back_pink, .effect_hover:hover .back_violet,
+    .effect_hover:hover .back_skyblue, .effect_hover:hover .back_deepskyblue {
+        -webkit-transform: rotateY(0deg);
+        transform: rotateY(0deg);
     }
 </style>
 

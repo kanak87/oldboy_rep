@@ -5,163 +5,320 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script>
+    <script type="text/javascript"
+            src="http://cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script>
     <script type="text/javascript" charset="utf-8"></script>
 
     <!-- 합쳐지고 최소화된 최신 CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
     <!-- 부가적인 테마 -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.2/cerulean/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.2/cerulean/bootstrap.min.css"
+          type="text/css">
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
     <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet"
+          type="text/css">
 
     <title>Image Upload Form</title>
     <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
 </head>
-<style>
-    body { padding-top: 70px; padding-left: 20px; }
-</style>
 <body>
-    <script>
-        function submitForm() {
-            console.log("submit event");
-            var radio_ele = document.forms[0].elements;
-            var len = radio_ele.length;
-            var check_val;
-            for(var i = 0; i < len; i++) {
-                if(radio_ele[i].checked)
-                    check_val = radio_ele[i].value;
-            }
-            if(check_val == null)
-                check_val = -1;
+<div class="container-fluid">
+    <div class="row">
+        <div class="effect_hover col-lg-6 col-md-6 col-sm-6 col-xs-12" onClick="window.location='/';">
+            <div class="front_pink">
+                <p class="main_font">Main home</p>
+            </div>
+            <div class="back_pink">
+                <span><i class="fa fa-fw fa-home icon_style_6"></i></span>
 
-            if(countFiles < 1) {
-                alert("Not exist image files");
-                return false;
-            }
-
-            var fd = new FormData(document.getElementById("files"));
-            var dic = '{ "name" : "' + name +'", "kind" : "' + check_val + '" }';
-            fd.append("data", dic);
-
-            $.ajax({
-              url: host + "request_register_face",
-              type: "POST",
-              data: fd,
-              enctype: 'multipart/form-data',
-              processData: false,  // tell jQuery not to process the data
-              contentType: false   // tell jQuery not to set contentType
-            }).done(function( data ) {
-                //debug console
-                console.log("Response Output:");
-                console.log(data);
-                var pars = JSON.parse(data);
-                if(pars["result"] != -1) {
-                    //regitPersonPanel(pars["id"], pars["thumbnail"], pars["name"], pars["kind"]);
-                    alert("Success!");
-                } else {
-                    alert("Does Not exist the face");
-                }
-            });
-            return false;
-
-        }
-    </script>
-
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container-fluid" style="font-size: 200%">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="/" style="font-size: 120%"> TEAM OLD BOY </a>
+                <p class="main_font">Main home</p>
+            </div>
         </div>
+        <div class="effect_hover col-lg-3 col-md-3 col-sm-3 col-xs-12" onClick="window.location='/cameraStream';">
+            <div class="front_violet">
+                <p class="main_font">Camera Stream</p>
+            </div>
+            <div class="back_violet">
+                <span><i class="fa fa-fw fa-camera icon_style_3"></i></span>
 
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
-          <ul class="nav navbar-nav">
-            <li><a href="/cameraStream"> 카메라 사진 확인 </a></li>
-            <li><a href="/state"> 등록 현황 </a></li>
-            <li class="active"><a href="/regit"> 등록 하기 </a></li>
-            <li><a href="/findToFile"> 파일로 찾기 </a></li>
-          </ul>
+                <p class="main_font">Camera Stream</p>
+            </div>
         </div>
-      </div>
-    </nav>
+        <div class="effect_hover col-lg-3 col-md-3 col-sm-3 col-xs-12" onClick="window.location='/state';">
+            <div class="front_skyblue">
+                <p class="main_font">Registered Person</p>
+            </div>
+            <div class="back_skyblue">
+                <span><i class="fa fa-fw fa-user-secret icon_style_3"></i></span>
 
-    <h1><p style="padding-left:10px; border-left:5px solid #ffe033;">Registration</p></h1>
+                <p class="main_font">Registered Person</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+             style="margin-top: 5px; border: 5px solid black; border-bottom: 0px; border-left: 0px;">
+            <span><i class="fa fa-fw fa-user-plus icon_style_3"></i></span>
+
+            <p class="main_font">Registration</p>
+
+        </div>
+        <div class="effect_hover col-lg-6 col-md-6 col-sm-6 col-xs-12" onClick="window.location='/findToFile';">
+            <div class="front_deepskyblue">
+                <p class="main_font">Find to File</p>
+            </div>
+            <div class="back_deepskyblue">
+                <span><i class="fa fa-fw fa-map-pin icon_style_6"></i></span>
+
+                <p class="main_font">Find to File</p>
+            </div>
+        </div>
+        <div class="back_white col-lg-3 col-md-3 col-sm-3 col-xs-12 text-center">
+            <p style="font-family: monospace; font-size:15pt">Old Boy Team?</p>
+            <span class="open_icon" style="cursor:pointer">▼</span>
+
+            <div class="hidden_text" style="width:100%; height:175px; background-color:rgba(0,0,0,0.1); display:none;">
+                <p style="font-family:Verdana; font-size:13pt">Mentor</p>한대희<br>
+                <br>
+
+                <p style="font-family:Verdana; font-size:13pt">Mentee</p>정용은<br>지해성<br>김정현
+            </div>
+        </div>
+    </div>
+</div>
+<hr>
+<h1><p style="padding-left:10px; color: #666666; border-left:5px solid #ffe033; margin-left:10px;">Registration</p></h1>
+<br>
+Name : <input id="name" type="text"/>
+<br>
+
+<form>
+    Kind : <input type="radio" name="c1" value=1>Missing
+    <input type="radio" name="c1" value=2>Wanted
+    <input type="radio" name="c1" value=0>Normal
+</form>
+<form method="post" id="files" name="files" enctype="multipart/form-data" onsubmit="return submitForm();">
+    <input id="fileUpload" type="file" name="file[]" multiple/>
     <br>
-    Name : <input id="name" type="text" />
-    <br>
-    <form>
-        Kind : <input type="radio" name="c1" value=1>Missing
-        <input type="radio" name="c1" value=2>Wanted
-        <input type="radio" name="c1" value=0>Normal
-    </form>
-    <form method="post" id="files" name="files" enctype="multipart/form-data" onsubmit="return submitForm();">
-        <input id="fileUpload" type="file" name="file[]" multiple />
-        <br>
-        <input type="submit" value="Registration" />
-    </form>
+    <input type="submit" value="Registration"/>
+</form>
 
-    <label>Image Files</label><br>
-    <div id="image-holder"></div>
-    <br>
+<label>Image Files</label><br>
 
-    <script>
-        // file selection
+<div id="image-holder"></div>
+<br>
 
-        var host = "http://175.126.82.175:20100/";
-        var kind_pic = {"-1" : "black", "0" : "green", "1" : "blue", "2" : "red"};
-        var kind_set = {"-1" : "Unknown", "0" : "Normal", "1" : "Missing", "2" : "Wanted"}
+<script>
+    // file selection
 
-        var countFiles=0;
-        var file_list;
-        var name;
-        $("#name").on('change', function() {
-            name = $(this)[0].value;
-        })
-        $("#fileUpload").on('change', function () {
+    var host = "http://175.126.82.175:20100/";
+    var kind_pic = {"-1": "black", "0": "green", "1": "blue", "2": "red"};
+    var kind_set = {"-1": "Unknown", "0": "Normal", "1": "Missing", "2": "Wanted"}
 
-            //Get count of selected files
-            var imgPath = $(this)[0].value;
-            var extn = imgPath.substring(imgPath.lastIndexOf('.') + 1).toLowerCase();
-            var image_holder = $("#image-holder");
+    var countFiles = 0;
+    var file_list;
+    var name;
+    $("#name").on('change', function () {
+        name = $(this)[0].value;
+    })
+    $("#fileUpload").on('change', function () {
 
-            countFiles = $(this)[0].files.length;
-            file_list = new Array(countFiles);
+        //Get count of selected files
+        var imgPath = $(this)[0].value;
+        var extn = imgPath.substring(imgPath.lastIndexOf('.') + 1).toLowerCase();
+        var image_holder = $("#image-holder");
 
-            image_holder.empty();
+        countFiles = $(this)[0].files.length;
+        file_list = new Array(countFiles);
 
-            if (extn == "gif" || extn == "png" || extn == "jpg" || extn == "jpeg") {
-                if (typeof (FileReader) != "undefined") {
-                    //loop for each file selected for uploaded.
-                    for (var i = 0; i < countFiles; i++) {
+        image_holder.empty();
 
-                        var reader = new FileReader();
-                        reader.onload = function (e) {
-                            $("<img />", {
-                                "src": e.target.result,
-                                    "class": "thumb-image"
-                            }).width(150).height(150).appendTo(image_holder);
-                        }
-                        image_holder.show();
-                        reader.readAsDataURL($(this)[0].files[i]);
+        if (extn == "gif" || extn == "png" || extn == "jpg" || extn == "jpeg") {
+            if (typeof (FileReader) != "undefined") {
+                //loop for each file selected for uploaded.
+                for (var i = 0; i < countFiles; i++) {
+
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $("<img />", {
+                            "src": e.target.result,
+                            "class": "thumb-image"
+                        }).width(150).height(150).appendTo(image_holder);
                     }
-
-                } else {
-                    alert("This browser does not support FileReader.");
+                    image_holder.show();
+                    reader.readAsDataURL($(this)[0].files[i]);
                 }
+
             } else {
-                alert("Pls select only images");
+                alert("This browser does not support FileReader.");
+            }
+        } else {
+            alert("Pls select only images");
+        }
+    });
+
+    function submitForm() {
+        console.log("submit event");
+        var radio_ele = document.forms[0].elements;
+        var len = radio_ele.length;
+        var check_val;
+        for (var i = 0; i < len; i++) {
+            if (radio_ele[i].checked)
+                check_val = radio_ele[i].value;
+        }
+        if (check_val == null)
+            check_val = -1;
+
+        if (countFiles < 1) {
+            alert("Not exist image files");
+            return false;
+        }
+
+        var fd = new FormData(document.getElementById("files"));
+        var dic = '{ "name" : "' + name + '", "kind" : "' + check_val + '" }';
+        fd.append("data", dic);
+
+        $.ajax({
+            url: host + "request_register_face",
+            type: "POST",
+            data: fd,
+            enctype: 'multipart/form-data',
+            processData: false,  // tell jQuery not to process the data
+            contentType: false   // tell jQuery not to set contentType
+        }).done(function (data) {
+            //debug console
+            console.log("Response Output:");
+            console.log(data);
+            var pars = JSON.parse(data);
+            if (pars["result"] != -1) {
+                //regitPersonPanel(pars["id"], pars["thumbnail"], pars["name"], pars["kind"]);
+                alert("Success!");
+            } else {
+                alert("Does Not exist the face");
             }
         });
-    </script>
+        return false;
 
+    }
+</script>
 </body>
+<style>
+    .main_font {
+        font-family: Cursive;
+        font-size: 13pt;
+        font-style: oblique;
+        margin-left: 15px;
+        vertical-align: text-bottom;
+        padding-top: 50px;
+        padding-bottom: 5px;
+    }
 
+    .intro_background {
+        background-color: #ffffff;
+        border: 5px solid;
+        /*background-color: #1abc9c; /* Green */
+        color: #000000;
+        margin-top: 5px;
+    }
+
+    .icon_style_6, .icon_style_3 {
+        color: black;
+        font-size: 50pt;
+        margin-left: 35%;
+        padding-top: 90px
+    }
+
+    .icon_style_6 {
+        margin-left: 45%;
+    }
+
+    .icon_style_3 {
+        margin-left: 35%;
+    }
+
+    .back_darkblue {
+        background-color: #474e5d; /* Dark Blue */
+        color: #ffffff;
+        border: 5px solid white;
+        padding-top: 100px;
+        padding-bottom: 100px;
+    }
+
+    .back_white {
+        background-color: #ffffff; /* White */
+        color: #555555;
+        padding-top: 10px;
+    }
+
+    .front_violet, .front_pink, .front_skyblue, .front_deepskyblue, .front_gold,
+    .back_violet, .back_pink, .back_skyblue, .back_deepskyblue, .back_gold {
+
+        cursor: pointer;
+
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        -webkit-transition: -webkit-transform 0.3s;
+        transition: transform 0.3s;
+    }
+
+    .front_violet, .front_pink, .front_skyblue, .front_deepskyblue, .front_gold {
+        color: #ffffff;
+        border: 5px solid white;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        padding-top: 150px;
+        padding-bottom: 5px;
+    }
+
+    .back_violet, .back_pink, .back_skyblue, .back_deepskyblue, .back_gold {
+        color: #000000;
+        margin-top: 15px;
+        box-shadow: -10px -10px 10px rgba(0, 0, 0, 0.3);
+        -webkit-transform: rotateY(-180deg);
+        transform: rotateY(-180deg);
+        padding-bottom: 5px;
+    }
+
+    .front_violet, .back_violet {
+        background-color: #9e109e; /* Violet */
+    }
+
+    .front_pink, .back_pink {
+        background-color: #DB1859; /* Pink */
+    }
+
+    .front_skyblue, .back_skyblue {
+        background-color: #87ceeb; /* Skyblue */
+    }
+
+    .front_deepskyblue, .back_deepskyblue {
+        background-color: #00bfff; /* DeepSkyblue */
+    }
+
+    .front_gold, .back_gold {
+        background-color: #ffe033; /* Gold */
+    }
+
+    .effect_hover:hover .front_gold, .effect_hover:hover .front_pink, .effect_hover:hover .front_violet,
+    .effect_hover:hover .front_skyblue, .effect_hover:hover .front_deepskyblue {
+        -webkit-transform: rotateY(-180deg);
+        transform: rotateY(-180deg);
+        /*box-shadow:1000px 1000px 1000px 1000px rgba(0,0,0,0.3) inset;*/
+    }
+
+    .effect_hover:hover .back_gold, .effect_hover:hover .back_pink, .effect_hover:hover .back_violet,
+    .effect_hover:hover .back_skyblue, .effect_hover:hover .back_deepskyblue {
+        -webkit-transform: rotateY(0deg);
+        transform: rotateY(0deg);
+    }
+</style>
 </html>
