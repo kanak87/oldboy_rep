@@ -15,12 +15,15 @@ from flask.ext.cors import cross_origin
 from werkzeug.utils import secure_filename
 
 from proxy.redis_function import RedisProxy
-from proxy.face_database import FaceDatabase, FaceKind
+from proxy.face_database import FaceDatabase
 from face_service import FaceService
 from util import *
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
+app.config['IMAGE_STORE'] = True
+app.config['UPLOAD_FOLDER'] = './thumbnails/'
+app.config['IMAGE_FOLDER'] = './images/'
 
 faceDetectSocketList = []
 
@@ -87,7 +90,6 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1] in app.config['ALLOWED_EXTENSIONS']
 
 
-app.config['UPLOAD_FOLDER'] = './thumbnails/'
 app.config['ALLOWED_EXTENSIONS'] = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
 
@@ -209,6 +211,11 @@ def request_face_detection():
         device_id = data['device_id']
         image = string_to_image(data['img'])
 
+        if app.config['IMAGE_STORE'] is True:
+            filename = now_datetime_to_filename('png')
+            save_path = os.path.join(app.config['IMAGE_FOLDER'], filename)
+            save_array(image, save_path)
+
         detected_faces = faceService.predict(image)
 
         # results.append((identity, bb, result_proba_list[identity]))
@@ -295,6 +302,10 @@ def request_face_detection_by_file():
             if file and allowed_file(file.filename):
                 images.append(stream_to_image(file))
 
+                if app.config['IMAGE_STORE'] is True:
+                    save_path = os.path.join(app.config['IMAGE_FOLDER'], file.filename)
+                    save_array(images[len(images) - 1], save_path)
+
         image = images[0]
 
         detected_faces = faceService.predict(image)
@@ -362,6 +373,9 @@ if __name__ == "__main__":
     # create thumbnail directory
     if not os.path.exists(app.config['UPLOAD_FOLDER']):
         os.makedirs(app.config['UPLOAD_FOLDER'])
+
+    if not os.path.exists(app.config['IMAGE_FOLDER']):
+        os.makedirs(app.config['IMAGE_FOLDER'])
 
     print "## face database"
     faceDatabase = FaceDatabase()

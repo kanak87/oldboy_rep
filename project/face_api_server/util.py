@@ -4,6 +4,7 @@ import cStringIO
 import urllib
 
 import cv2
+import datetime
 import numpy as np
 from PIL import Image
 from proxy.face_database import FaceKind
@@ -93,3 +94,12 @@ def image_to_url(image):
     content = 'data:image/png;base64,' + urllib.quote(base64.b64encode(imgdata.buf))
 
     return content
+
+
+def now_datetime_to_filename(ext):
+    now_time = datetime.datetime.now()
+    filename = '%02d%02d%02d%02d%02d%02d%04d.%s' % (
+        now_time.year % 100, now_time.month, now_time.day, now_time.hour, now_time.minute, now_time.second,
+        now_time.microsecond / 100, ext)
+
+    return filename
