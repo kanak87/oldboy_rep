@@ -12,14 +12,32 @@
 <body>
 <div class="container-fluid">
     <div class="row">
-        <div class="back_pink col-lg-6 col-md-6 col-sm-6 col-xs-12" onClick="window.location='/';">
-            <p style="font-family:Cursive; font-size:13pt; font-style:oblique">Main home</p>
+        <div class="effect_hover col-lg-6 col-md-6 col-sm-6 col-xs-12" onClick="window.location='/';">
+            <div class="front_pink">
+                <p class="main_font">Main home</p>
+            </div>
+            <div class="back_pink">
+                <span><i style="color:black; font-size:50pt; margin-left: 45%; padding-top: 90px;" class="fa fa-fw fa-home"></i></span>
+                <p class="main_font">Main home</p>
+            </div>
         </div>
-        <div class="back_violet col-lg-3 col-md-3 col-sm-3 col-xs-12" onClick="window.location='/cameraStream';">
-            <p style="font-family:Cursive; font-size:13pt; font-style:oblique">Camera Stream</p>
+        <div class="effect_hover col-lg-3 col-md-3 col-sm-3 col-xs-12" onClick="window.location='/cameraStream';">
+            <div class="front_violet">
+                <p class="main_font">Camera Stream</p>
+            </div>
+            <div class="back_violet">
+                <span><i style="color:black; font-size:50pt; margin-left: 35%; padding-top: 90px;" class="fa fa-fw fa-camera"></i></span>
+                <p class="main_font">Camera Stream</p>
+            </div>
         </div>
-        <div class="back_skyblue col-lg-3 col-md-3 col-sm-3 col-xs-12" onClick="window.location='/state';">
-            <p style="font-family:Cursive; font-size:13pt; font-style:oblique">Registered Person</p>
+        <div class="effect_hover col-lg-3 col-md-3 col-sm-3 col-xs-12" onClick="window.location='/state';">
+            <div class="front_skyblue">
+                <p class="main_font">Registered Person</p>
+            </div>
+            <div class="back_skyblue">
+                <span><i style="color:black; font-size:50pt; margin-left: 35%; padding-top: 90px;" class="fa fa-fw fa-user-secret"></i></span>
+                <p class="main_font">Registered Person</p>
+            </div>
         </div>
     </div>
 
@@ -27,11 +45,23 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="back_gold col-lg-3 col-md-3 col-sm-3 col-xs-12" onClick="window.location='/regit';">
-            <p style="font-family:Cursive; font-size:13pt; font-style:oblique">Registration</p>
+        <div class="effect_hover col-lg-3 col-md-3 col-sm-3 col-xs-12" onClick="window.location='/regit';">
+            <div class="front_gold">
+                <p class="main_font">Registration</p>
+            </div>
+            <div class="back_gold">
+                <span><i style="color:black; font-size:50pt; margin-left: 35%; padding-top: 90px;" class="fa fa-fw fa-user-plus"></i></span>
+                <p class="main_font">Registration</p>
+            </div>
         </div>
-        <div class="back_deepskyblue col-lg-6 col-md-6 col-sm-6 col-xs-12" onClick="window.location='/findToFile';">
-            <p style="font-family:Cursive; font-size:13pt; font-style:oblique">Find to File</p>
+        <div class="effect_hover col-lg-6 col-md-6 col-sm-6 col-xs-12" onClick="window.location='/findToFile';">
+            <div class="front_deepskyblue">
+                <p class="main_font">Find to File</p>
+            </div>
+            <div class="back_deepskyblue">
+                <span><i style="color:black; font-size:50pt; margin-left: 45%; padding-top: 90px;" class="fa fa-fw fa-map-pin"></i></span>
+                <p class="main_font">Find to File</p>
+            </div>
         </div>
         <div class="back_white col-lg-3 col-md-3 col-sm-3 col-xs-12 text-center">
             <p style="font-family: monospace; font-size:15pt">Old Boy Team?</p>
@@ -44,7 +74,7 @@
     </div>
 </div>
 
-  <div class="container-fluid back_green text-center" style="height:100%;">
+  <div class="container-fluid intro_background text-center" style="height:100%;">
   <h2>What is the kind of this project?</h2>
   <div class="row">
     <div class="col-sm-4">
@@ -73,11 +103,21 @@
 </script>
 
 <style>
-.back_green {
+.main_font {
+    font-family:Cursive;
+    font-size:13pt;
+    font-style:oblique;
+    margin-left:15px;
+    vertical-align:text-bottom;
+    padding-top: 50px;
+    padding-bottom: 5px;
+}
+.intro_background {
     background-color: #ffffff;
     border: 5px solid;
     /*background-color: #1abc9c; /* Green */
     color: #000000;
+    margin-top:5px;
 }
 .back_darkblue {
     background-color: #474e5d; /* Dark Blue */
@@ -91,56 +131,61 @@
     color: #555555;
     padding-top: 10px;
 }
-.back_violet {
+.front_violet, .front_pink, .front_skyblue, .front_deepskyblue, .front_gold,
+.back_violet, .back_pink, .back_skyblue, .back_deepskyblue, .back_gold {
+
+    cursor: pointer;
+
+    -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+    -webkit-transition: -webkit-transform 0.3s;
+        transition: transform 0.3s;
+}
+.front_violet, .front_pink, .front_skyblue, .front_deepskyblue, .front_gold {
+    color: #ffffff;
+    border: 5px solid white;
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    width:100%;
+    padding-top: 150px;
+    padding-bottom: 5px;
+}
+.back_violet, .back_pink, .back_skyblue, .back_deepskyblue, .back_gold {
+    color: #000000;
+    margin-top: 15px ;
+    box-shadow: -10px -10px 10px rgba(0,0,0,0.3);
+    -webkit-transform: rotateY(-180deg);
+        transform: rotateY(-180deg);
+    padding-bottom: 5px;
+}
+.front_violet, .back_violet {
     background-color: #9e109e; /* Violet */
-    color: #ffffff;
-    border: 5px solid white;
-    padding-top: 200px;
-    padding-bottom: 5px;
-    vertical-align:text-bottom; transition:all 0.8s, color 0.3s 0.3s;
-    cursor: pointer;
 }
-.back_pink {
+.front_pink, .back_pink {
     background-color: #DB1859; /* Pink */
-    color: #ffffff;
-    border: 5px solid white;
-    padding-top: 200px;
-    padding-bottom: 5px;
-    vertical-align:text-bottom; transition:all 0.8s, color 0.3s 0.3s;
-    cursor: pointer;
 }
-.back_skyblue {
+.front_skyblue, .back_skyblue {
     background-color: #87ceeb; /* Skyblue */
-    color: #ffffff;
-    border: 5px solid white;
-    padding-top: 200px;
-    padding-bottom: 5px;
-    vertical-align:text-bottom; transition:all 0.8s, color 0.3s 0.3s;
-    cursor: pointer;
 }
-.back_deepskyblue {
+.front_deepskyblue, .back_deepskyblue {
     background-color: #00bfff; /* DeepSkyblue */
-    color: #ffffff;
-    border: 5px solid white;
-    padding-top: 200px;
-    padding-bottom: 5px;
-    vertical-align:text-bottom; transition:all 0.8s, color 0.3s 0.3s;
-    cursor: pointer;
 }
-.back_gold {
+.front_gold, .back_gold {
     background-color: #ffe033; /* Gold */
-    color: #ffffff;
-    border: 5px solid white;
-    padding-top: 200px;
-    padding-bottom: 5px;
-    vertical-align:text-bottom; transition:all 0.5s, color 0.3s 0.3s;
-    cursor: pointer;
 }
-.back_gold:hover, .back_pink:hover, .back_violet:hover, .back_skyblue:hover, .back_deepskyblue:hover {
-    box-shadow:1000px 1000px 1000px 1000px rgba(0,0,0,0.3) inset;
+.effect_hover:hover .front_gold, .effect_hover:hover .front_pink, .effect_hover:hover .front_violet,
+.effect_hover:hover .front_skyblue, .effect_hover:hover .front_deepskyblue {
+    -webkit-transform: rotateY(-180deg);
+          transform: rotateY(-180deg);
+    /*box-shadow:1000px 1000px 1000px 1000px rgba(0,0,0,0.3) inset;*/
 }
-
-
+.effect_hover:hover .back_gold, .effect_hover:hover .back_pink, .effect_hover:hover .back_violet,
+.effect_hover:hover .back_skyblue, .effect_hover:hover .back_deepskyblue {
+    -webkit-transform: rotateY(0deg);
+          transform: rotateY(0deg);
+}
 </style>
 
 </html>

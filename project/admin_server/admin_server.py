@@ -2,7 +2,6 @@ from flask import Flask, render_template, session, g, \
     redirect, url_for, abort, abort, flash
 
 DEBUG = True
-
 app = Flask(__name__)
 
 @app.route('/')
@@ -39,4 +38,4 @@ def cameraStream():
 	return render_template('cameraStream.html', ** templateData)
 
 if __name__ == "__main__":
-    app.run(port=5000, debug=True)
+    app.run(port=5000, debug=True, threaded=True)

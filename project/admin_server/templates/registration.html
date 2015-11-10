@@ -37,6 +37,11 @@
             if(check_val == null)
                 check_val = -1;
 
+            if(countFiles < 1) {
+                alert("Not exist image files");
+                return false;
+            }
+
             var fd = new FormData(document.getElementById("files"));
             var dic = '{ "name" : "' + name +'", "kind" : "' + check_val + '" }';
             fd.append("data", dic);
@@ -106,6 +111,7 @@
     <label>Image Files</label><br>
     <div id="image-holder"></div>
     <br>
+
     <script>
         // file selection
 
@@ -113,7 +119,7 @@
         var kind_pic = {"-1" : "black", "0" : "green", "1" : "blue", "2" : "red"};
         var kind_set = {"-1" : "Unknown", "0" : "Normal", "1" : "Missing", "2" : "Wanted"}
 
-        var countFiles;
+        var countFiles=0;
         var file_list;
         var name;
         $("#name").on('change', function() {
