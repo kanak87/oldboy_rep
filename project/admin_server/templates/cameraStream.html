@@ -20,11 +20,17 @@
     <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
 </head>
 <style>
-    body { padding-top: 70px; }
+    body { padding-top: 70px; padding-left: 20px; }
 </style>
 <body>
-    <h1>Camera devices</h1>
-    <br>
+    <h1><p style="padding-left:10px; border-left:5px solid #9e109e;">Camera devices</p></h1>
+
+    <div class="text-center" id ="loading_div">
+        <br>
+        loading...<br>
+        <div id="loading">●</div>
+    </div>
+
     <div class="container">
         <div id="device_panel"class="row">
 
@@ -72,7 +78,7 @@
 
                 var pars = JSON.parse(data);
                 var device_datas = pars["device_datas"];
-
+                $("#loading_div").remove();
                 // Connected devices info
                 for(var i = 0; i < device_datas.length; i++) {
                     devicePicturePanel(device_datas[i]['device_id'], device_datas[i]['image']);
@@ -139,5 +145,24 @@
     $("#detectedFaces").html("");
     createSocket("ws://175.126.82.175:20100/ws", "Local");
 </script>
+
+<style>
+    #loading {
+        display: inline-block;
+        width: 50px;
+        height: 50px;
+        border: 3px solid rgba(255,255,255,0.3);
+        border-radius: 50%;
+        border-top-color: #fff;
+        animation: spin 1s ease-in-out infinite;
+        -webkit-animation: spin 1s ease-in-out infinite;
+    }
+    @keyframes spin {
+        to { -webkit-transform: rotate(360deg); }
+    }
+    @-webkit-keyframes spin {
+        to { -webkit-transform: rotate(360deg); }
+    }
+</style>
 
 </html>

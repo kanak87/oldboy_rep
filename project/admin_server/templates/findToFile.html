@@ -21,7 +21,7 @@
     <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
 </head>
 <style>
-    body { padding-top: 70px; }
+    body { padding-top: 70px; padding-left: 20px; }
 </style>
 <body>
     <script>
@@ -73,16 +73,16 @@
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="/cameraStream"> 카메라 사진 확인 </a></li>
+            <li><a href="/cameraStream"> 카메라 사진 확인 </a></li>
             <li><a href="/state"> 등록 현황 </a></li>
             <li><a href="/regit"> 등록 하기 </a></li>
-            <li><a href="/findToFile"> 파일로 찾기 </a></li>
+            <li class="active"><a href="/findToFile"> 파일로 찾기 </a></li>
           </ul>
         </div>
       </div>
     </nav>
 
-    <h1>Find To File</h1>
+    <h1><p style="padding-left:10px; border-left:5px solid #00bfff;">Find To File</p></h1>
     <br>
 
     <form method="post" id="files" name="files" enctype="multipart/form-data" onsubmit="return submitForm();">
