@@ -166,6 +166,76 @@ def request_register_face():
     return json.dumps(result)
 
 
+@app.route("/request_register_face_from_webcam", methods=['POST'])
+@cross_origin()
+def request_register_face_from_webcam():
+    try:
+        data = json.loads(request.form['data'])
+        name = data['name']
+        kind = data['kind']
+
+        images = []
+        for imageUrl in data['images']:
+            image = string_to_image(imageUrl, "")
+            images.append(image)
+
+            if app.config['IMAGE_STORE'] is True:
+                filename = now_datetime_to_filename('png')
+                save_path = os.path.join(app.config['IMAGE_FOLDER'], filename)
+                save_array(image, save_path)
+
+        if len(images) < 1:
+            raise Exception('empty images array')
+
+        if faceDatabase.is_exist(name) is False:
+            thumbnail_path = name + "png"
+            thumbnail_path = os.path.join(app.config['UPLOAD_FOLDER'], thumbnail_path)
+            save_array(images[0], thumbnail_path)
+
+            identity = faceDatabase.add_new_user(name, thumbnail_path, kind)
+        else:
+            user = faceDatabase.find_user_by_name(name)
+            identity = user.identity
+            thumbnail_path = user.thumbnail
+
+        training_result = faceService.training(identity, images)
+
+        file_training_result = []
+        i = 0
+        for image in images:
+            file_training_result.append({
+                "filename": str(i),
+                "result": training_result[i]
+            })
+            i += 1
+
+        result = {
+            "result": "0",
+            "face": {
+                "id": identity,
+                "name": name,
+                "kind": kind,
+                "thumbnail": thumbnail_path
+            },
+            "training_result": file_training_result
+        }
+
+        pickle.dump(faceDatabase.users, open('user.pickle', 'wb'), -1)
+        pickle.dump(faceService.svm, open('svm.pickle', 'wb'), -1)
+        pickle.dump(faceService.trained_images, open('trained_images.pickle', 'wb'), -1)
+
+    except Exception as e:
+        print "-" * 60
+        print e.message
+        print " "
+        print traceback.print_exc(file=sys.stdout)
+        print "-" * 60
+        result = {"result": "-1",
+                  "message": e.message}
+
+    return json.dumps(result)
+
+
 @app.route("/request_unregister_face", methods=['POST'])
 @cross_origin()
 def request_unregister_face():
@@ -216,6 +286,14 @@ def request_face_detection():
             save_path = os.path.join(app.config['IMAGE_FOLDER'], filename)
             save_array(image, save_path)
 
+        send_image = True
+
+        try:
+            if data['debug'] == 1:
+                send_image = False
+        except Exception:
+            send_image = True
+
         detected_faces = faceService.predict(image)
 
         # results.append((identity, bb, result_proba_list[identity]))
@@ -262,6 +340,9 @@ def request_face_detection():
         for protocol in faceDetectSocketList:
             protocol.sendMessage(json.dumps(msg))
         result['detected_faces'] = detected_faces_result
+
+        if send_image is True:
+            result['image'] = annotated_url_image
 
     except Exception as e:
         print "-" * 60
@@ -397,16 +478,24 @@ if __name__ == "__main__":
     if debug:
         log.startLogging(sys.stdout)
 
-    wsFactory = WebSocketServerFactory(u"ws://127.0.0.1:20100",
-                                       debug=debug,
-                                       debugCodePaths=debug)
+    while True:
+        try:
+            wsFactory = WebSocketServerFactory(u"ws://127.0.0.1:20100",
+                                               debug=debug,
+                                               debugCodePaths=debug)
 
-    wsFactory.protocol = FaceDetectReceiveSocket
-    wsResource = WebSocketResource(wsFactory)
-    wsgiResource = WSGIResource(reactor, reactor.getThreadPool(), app)
-    rootResource = WSGIRootResource(wsgiResource, {'ws': wsResource})
+            wsFactory.protocol = FaceDetectReceiveSocket
+            wsResource = WebSocketResource(wsFactory)
+            wsgiResource = WSGIResource(reactor, reactor.getThreadPool(), app)
+            rootResource = WSGIRootResource(wsgiResource, {'ws': wsResource})
 
-    site = Site(rootResource)
+            site = Site(rootResource)
 
-    reactor.listenTCP(20100, site)
-    reactor.run()
+            reactor.listenTCP(20100, site)
+            reactor.run()
+        except Exception as e:
+            print "#" * 60
+            print e.message
+            print " "
+            print traceback.print_exc(file=sys.stdout)
+            print "#" * 60
