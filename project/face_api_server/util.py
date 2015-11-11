@@ -35,8 +35,7 @@ def file_to_image(path):
     return image_to_nparray(image)
 
 
-def string_to_image(image_string):
-    head = "data:image/jpeg;base64,"
+def string_to_image(image_string, head="data:image/jpeg;base64,"):
     assert (image_string.startswith(head))
 
     imgdata = base64.b64decode(image_string[len(head):])
