@@ -39,7 +39,7 @@
         </div>
         <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
              style="margin-top: 5px; border: 5px solid black; border-bottom: 0px;">
-            <span><i class="fa fa-fw fa-camera icon_style_3"></i></span>
+            <span><i class="fa fa-fw fa-camera-retro icon_style_3"></i></span>
 
             <p class="main_font">Camera Stream</p>
 
@@ -107,7 +107,32 @@
         </div>
     </div>
 </div>
+<hr>
+<div class="container-fluid" style="height:130px;">
+    <div class="row">
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+        </div>
+        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
+            <p style="font-family: fantasy; font-size: 50px; margin-top:30px;"><b>Team. Old Boy</b></p> <!--logo plz-->
+        </div>
+        <div class="col-lg-5 col-md-5 col-sm-4 col-xs-4">
+            <p style="font-family: Courier; font-size:20px; padding-left:20px; margin-left: 90px; border-left:5px solid blue">
+                <b>Mentor</b></p>
 
+            <p style="margin-left: 170px; margin-top: -10px;">한대희</p>
+
+            <p style="font-family: Courier; font-size:20px; padding-left:20px; margin-left: 100px; margin-top: -5px; border-left:5px solid red">
+                <b>Leader</b></p>
+
+            <p style="margin-left: 180px; margin-top: -10px;">정용은</p>
+
+            <p style="font-family: Courier; font-size:20px; padding-left:20px; margin-left: 110px; margin-top: -5px; border-left:5px solid black">
+                <b>Team member</b></p>
+
+            <p style="margin-left: 190px; margin-top: -10px;">지해성 김정현</p>
+        </div>
+    </div>
+</div>
 <script>
     // first data send for already registered person
     $(document).ready(function () {
@@ -265,8 +290,8 @@
         padding-top: 10px;
     }
 
-    .front_violet, .front_pink, .front_skyblue, .front_deepskyblue, .front_gold,
-    .back_violet, .back_pink, .back_skyblue, .back_deepskyblue, .back_gold {
+    .front_violet, .front_pink, .front_skyblue, .front_deepskyblue, .front_gold, .front_green,
+    .back_violet, .back_pink, .back_skyblue, .back_deepskyblue, .back_gold, .back_green {
 
         cursor: pointer;
 
@@ -276,7 +301,7 @@
         transition: transform 0.3s;
     }
 
-    .front_violet, .front_pink, .front_skyblue, .front_deepskyblue, .front_gold {
+    .front_violet, .front_pink, .front_skyblue, .front_deepskyblue, .front_gold, .front_green {
         color: #ffffff;
         border: 5px solid white;
         position: absolute;
@@ -288,7 +313,7 @@
         padding-bottom: 5px;
     }
 
-    .back_violet, .back_pink, .back_skyblue, .back_deepskyblue, .back_gold {
+    .back_violet, .back_pink, .back_skyblue, .back_deepskyblue, .back_gold, .back_green {
         color: #000000;
         margin-top: 15px;
         box-shadow: -10px -10px 10px rgba(0, 0, 0, 0.3);
@@ -317,15 +342,19 @@
         background-color: #ffe033; /* Gold */
     }
 
+    .front_green, .back_green {
+        background-color: #32cd32; /* LimeGreen */
+    }
+
     .effect_hover:hover .front_gold, .effect_hover:hover .front_pink, .effect_hover:hover .front_violet,
-    .effect_hover:hover .front_skyblue, .effect_hover:hover .front_deepskyblue {
+    .effect_hover:hover .front_skyblue, .effect_hover:hover .front_deepskyblue, .effect_hover:hover .front_green {
         -webkit-transform: rotateY(-180deg);
         transform: rotateY(-180deg);
         /*box-shadow:1000px 1000px 1000px 1000px rgba(0,0,0,0.3) inset;*/
     }
 
     .effect_hover:hover .back_gold, .effect_hover:hover .back_pink, .effect_hover:hover .back_violet,
-    .effect_hover:hover .back_skyblue, .effect_hover:hover .back_deepskyblue {
+    .effect_hover:hover .back_skyblue, .effect_hover:hover .back_deepskyblue, .effect_hover:hover .back_green {
         -webkit-transform: rotateY(0deg);
         transform: rotateY(0deg);
     }
