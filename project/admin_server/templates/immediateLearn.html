@@ -120,13 +120,7 @@
             <br>
         </div>
     </div>
-<!--
-    <form method="post" id="files" name="files" enctype="multipart/form-data" onsubmit="return submitForm();">
-        <div id="fileUpload"/>
-        <br>
 
-        <input type="submit" value="등록"/>    </form>
--->
     <div class="text-center">
         <h3>- Captured Image -</h3>▽
     </div>
@@ -214,9 +208,29 @@
         ctx.drawImage(video, 0, 0, w, h);
 
         imgData[image_num] = canvas.toDataURL("img/png");
-        imgData[image_num] = imgData[image_num].replace('data:image/png;base64,', '');
+        imgData[image_num] = dataURItoBlob(imgData[image_num]);
 
         return canvas;
+    }
+
+    function dataURItoBlob(dataURI) {
+        // convert base64/URLEncoded data component to raw binary data held in a string
+        var byteString;
+        if (dataURI.split(',')[0].indexOf('base64') >= 0)
+            byteString = atob(dataURI.split(',')[1]);
+        else
+            byteString = unescape(dataURI.split(',')[1]);
+
+        // separate out the mime component
+        var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+
+        // write the bytes of the string to a typed array
+        var ia = new Uint8Array(byteString.length);
+        for (var i = 0; i < byteString.length; i++) {
+            ia[i] = byteString.charCodeAt(i);
+        }
+
+        return new Blob([ia], {type: mimeString});
     }
 
     $("#name").on('change', function () {
@@ -240,38 +254,34 @@
             return false;
         }
 
-        //var fd = new FormData(imgData);
-        //console.log(fd);
         var postData = new FormData();
         var dic = '{ "name" : "' + name + '", "kind" : "' + check_val + '" }';
-        //dic = JSON.stringify(dic);
-        postData.append("images", imgData);
+        for(var i = 0; i < image_num; i++) {
+            postData.append("file[]", imgData[i], i + '.png');
+        }
         postData.append("data", dic);
-        console.log(imgData);
 
-        //fd.append("data", dic);
-        console.log(dic);
         $.ajax({
-            url: host + "request_register_face_from_webcam",
+            url: host + "request_register_face",
             type: "POST",
             data: postData,
+            contentType: 'multipart/form-data',
             processData: false,  // tell jQuery not to process the data
             contentType: false   // tell jQuery not to set contentType
         }).done(function (data) {
             //debug console
             console.log("Response Output:");
             console.log(data);
-            /*
+
             var pars = JSON.parse(data);
             if (pars["result"] != -1) {
-                //regitPersonPanel(pars["id"], pars["thumbnail"], pars["name"], pars["kind"]);
                 alert("Success!");
             } else {
                 alert("Does Not exist the face");
             }
-            */
-        });
 
+        });
+        return false;
     }
 </script>
 </body>
