@@ -5,6 +5,7 @@ import urllib
 
 import cv2
 import datetime
+import netifaces
 import numpy as np
 from PIL import Image
 from proxy.face_database import FaceKind
@@ -102,3 +103,13 @@ def now_datetime_to_filename(ext):
         now_time.microsecond / 100, ext)
 
     return filename
+
+def get_inet_addr():
+    interfaces = netifaces.interfaces()
+    for i in interfaces:
+        if i == 'lo':
+            continue
+        iface = netifaces.ifaddresses(i).get(netifaces.AF_INET)
+        if iface != None:
+            for j in iface:
+                return j['addr']

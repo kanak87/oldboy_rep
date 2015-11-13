@@ -2,6 +2,7 @@
 <head>
     <meta charset="utd-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta id="host_data" data-addr="{{inet_addr}}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <script type="text/javascript"
@@ -163,7 +164,9 @@
 </body>
 
 <script>
-    var host = "http://175.126.82.175:20100/";
+    var host_data = $("#host_data").data();
+    var host = "http://"+ host_data["addr"] +":20100/";
+    console.log(host_data["addr"]);
     var kind_pic = {"-1": "black", "0": "green", "1": "blue", "2": "red"};
     var kind_set = {"-1": "Unknown", "0": "Normal", "1": "Missing", "2": "Wanted"}
 
@@ -216,7 +219,8 @@
         }
     }
     $("#detectedFaces").html("");
-    createSocket("ws://175.126.82.175:20100/ws", "Local");
+    console.log(host_data["addr"]);
+    createSocket("ws://" + host_data["addr"] + ":20100/ws", "Local");
 </script>
 
 <style>
