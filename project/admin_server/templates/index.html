@@ -6,19 +6,42 @@
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet"
+          type="text/css">
 </head>
 
 <body>
 <div class="container-fluid">
     <div class="row">
-        <div class="back_pink col-lg-6 col-md-6 col-sm-6 col-xs-12" onClick="window.location='/';">
-            <p style="font-family:Cursive; font-size:13pt; font-style:oblique">Main home</p>
+        <div class="effect_hover col-lg-6 col-md-6 col-sm-6 col-xs-12" onClick="window.location='/';">
+            <div class="front_pink">
+                <p class="main_font">Main home</p>
+            </div>
+            <div class="back_pink">
+                <span><i class="fa fa-fw fa-home icon_style_6"></i></span>
+
+                <p class="main_font">Main home</p>
+            </div>
         </div>
-        <div class="back_violet col-lg-3 col-md-3 col-sm-3 col-xs-12" onClick="window.location='/cameraStream';">
-            <p style="font-family:Cursive; font-size:13pt; font-style:oblique">Camera Stream</p>
+        <div class="effect_hover col-lg-3 col-md-3 col-sm-3 col-xs-12" onClick="window.location='/cameraStream';">
+            <div class="front_violet">
+                <p class="main_font">Camera Stream</p>
+            </div>
+            <div class="back_violet">
+                <span><i class="fa fa-fw fa-camera-retro icon_style_3"></i></span>
+
+                <p class="main_font">Camera Stream</p>
+            </div>
         </div>
-        <div class="back_skyblue col-lg-3 col-md-3 col-sm-3 col-xs-12" onClick="window.location='/state';">
-            <p style="font-family:Cursive; font-size:13pt; font-style:oblique">Registered Person</p>
+        <div class="effect_hover col-lg-3 col-md-3 col-sm-3 col-xs-12" onClick="window.location='/state';">
+            <div class="front_skyblue">
+                <p class="main_font">Registered Person</p>
+            </div>
+            <div class="back_skyblue">
+                <span><i class="fa fa-fw fa-user-secret icon_style_3"></i></span>
+
+                <p class="main_font">Registered Person</p>
+            </div>
         </div>
     </div>
 
@@ -26,120 +49,247 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="back_gold col-lg-3 col-md-3 col-sm-3 col-xs-12" onClick="window.location='/regit';">
-            <p style="font-family:Cursive; font-size:13pt; font-style:oblique">Registration</p>
+        <div class="effect_hover col-lg-3 col-md-3 col-sm-3 col-xs-12" onClick="window.location='/regit';">
+            <div class="front_gold">
+                <p class="main_font">Registration</p>
+            </div>
+            <div class="back_gold">
+                <span><i class="fa fa-fw fa-user-plus icon_style_3"></i></span>
+
+                <p class="main_font">Registration</p>
+            </div>
         </div>
-        <div class="back_deepskyblue col-lg-6 col-md-6 col-sm-6 col-xs-12" onClick="window.location='/findToFile';">
-            <p style="font-family:Cursive; font-size:13pt; font-style:oblique">Find to File</p>
+        <div class="effect_hover col-lg-6 col-md-6 col-sm-6 col-xs-12" onClick="window.location='/findToFile';">
+            <div class="front_deepskyblue">
+                <p class="main_font">Find to File</p>
+            </div>
+            <div class="back_deepskyblue">
+                <span><i class="fa fa-fw fa-map-pin icon_style_6"></i></span>
+
+                <p class="main_font">Find to File</p>
+            </div>
         </div>
-        <div class="back_white col-lg-3 col-md-3 col-sm-3 col-xs-12 text-center">
-            <p style="font-family: monospace; font-size:15pt">Old Boy Team?</p>
-            <span class="open_icon" style="cursor:pointer">▼</span>
-            <div class="hidden_text" style="width:100%; height:175px; background-color:rgba(0,0,0,0.1); display:none;">
-                <p style="font-family:Verdana; font-size:13pt">Mentor</p>한대희<br>
-                <br><p style="font-family:Verdana; font-size:13pt">Mentee</p>정용은<br>지해성<br>김정현
+        <div class="effect_hover col-lg-3 col-md-3 col-sm-3 col-xs-12"
+             onClick="window.location='/immediateLearn';">
+            <div class="front_green">
+                <p class="main_font">Immediate Learning</p>
+            </div>
+            <div class="back_green">
+                <span><i class="fa fa-fw fa-pencil-square-o icon_style_3"></i></span>
+
+                <p class="main_font">Immediate Learning</p>
             </div>
         </div>
     </div>
 </div>
 
-  <div class="container-fluid back_green text-center" style="height:100%;">
-  <h2>What is the kind of this project?</h2>
-  <div class="row">
-    <div class="col-sm-4">
-      <h4><p>Wanted Criminal</p></h4>
-      <img src="birds1.jpg" alt="Image">
+<div class="container-fluid intro_background text-center" >
+    <h1>What is the kind of this project?</h1>
+
+    <div class="row">
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6">
+            <h3><p>Wanted Criminal</p></h3><br>
+            <p style="padding-left:40px; padding-right:40px">
+                현상수배범 및 지명수배범<br>
+                수배범의 사진들로 기계학습<br>
+                CCTV 데이터를 통한 데이터 수집<br>
+                유사한 인물 발견시 알림<br>
+                범인 검거<br><br>
+            </p>
+            <img style="max-width:100%; max-height:100%" src="data:image/png;base64,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"/>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6">
+            <h3><p>Find Missing child</p></h3><br>
+            <p style="padding-left:40px; padding-right:40px">
+                실종 및 미아<br>
+                실종된 사람, 미아 등의 사진들로 기계학습<br>
+                CCTV 데이터를 통한 데이터 수집<br>
+                유사한 얼굴 발견시 알림<br>
+                아동의 위치 확인<br><br>
+            </p>
+            <img style="max-width:100%; max-height:100%" src="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcR_jGTAf16IcVxYyfpVcVo7TXTP2ams7NWd_U76KywbKZ0lRkjL"/>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6">
+            <h3><p>Register Customers</p></h3><br>
+            <p style="padding-left:40px; padding-right:40px">
+                카페 회원 등록<br>
+                처음 들어온 손님 얼굴 등록<br>
+                웹캠 데이터를 통한 데이터 수집<br>
+                DB에서 유사도 확인 작업<br>
+                손님 정보 확인 및 각종 서비스 제공<br><br>
+            </p>
+            <img style="max-width:100%; max-height:100%" src="https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcSLNrjRGWk8m3lmesvQKvgoCVDnJGjwYqCymk3bqMHrWl2g-jHBrw"/>
+        </div>
     </div>
-    <div class="col-sm-4">
-      <h4><p>Find Missing child</p></h4>
-      <img src="birds2.jpg" alt="Image">
+    <br><br>
+    <h1>How to use?</h1><br>
+    <table style="width:1500px; max-width:100%; margin-left:20px">
+        <tr>
+            <td><h4 style="color:#9e109e"> ▷ Camera Stream </h4></td>
+            <td> : 연결된 카메라(안드로이드, 웹캠 등)를 통해 촬영된 사진들이 서버를 통해 표시. 어떤 사람과 닮았는지 확률 정보를 확인 가능.</td>
+        </tr>
+        <tr>
+            <td><h4 style="color:#87ceeb"> ▷ Registered Person </h4></td>
+            <td> : 등록된 모든 사람들의 사진 및 이름 표기. x버튼으로 등록을 해제가능. 빨간색: Wanted / 파란색: Missing / 초록색: Normal</td>
+        </tr>
+        <tr>
+            <td><h4 style="color:#ffe033"> ▷ Registration </h4></td>
+            <td> : 이름, 종류, 이미지 파일로 찾을 사람 등록이 가능. 단, 파일은 오로지 이미지 파일로 제한됨.</td>
+        </tr>
+        <tr>
+            <td><h4 style="color:#00bfff"> ▷ Find to File </h4></td>
+            <td> : 사람 얼굴이 있는 파일(이미지 파일) 을 통해서, Unknown 혹은 등록된 사람인가 확인.</td>
+        </tr>
+        <tr>
+            <td><h4 style="color:#32cd32"> ▷ Immediate Learning </h4></td>
+            <td> : 웹캠을 통해서 직접 얼굴이 있는 사진을 여러장 찍어 서버에 전송. 즉석으로 등록 가능.</td>
+        </tr>
+    </table>
+</div>
+<hr>
+<div class="container-fluid" style="height:130px;">
+    <div class="row">
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+        </div>
+        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
+            <p style="font-family: fantasy; font-size: 50px; margin-top:30px;"><b>Team. Old Boy</b></p> <!--logo plz-->
+        </div>
+        <div class="col-lg-5 col-md-5 col-sm-4 col-xs-4">
+            <p style="font-family: Courier; font-size:20px; padding-left:20px; margin-left: 90px; border-left:5px solid blue">
+                <b>Mentor</b></p>
+
+            <p style="margin-left: 170px; margin-top: -10px;">한대희</p>
+
+            <p style="font-family: Courier; font-size:20px; padding-left:20px; margin-left: 100px; margin-top: -5px; border-left:5px solid red">
+                <b>Leader</b></p>
+
+            <p style="margin-left: 180px; margin-top: -10px;">정용은</p>
+
+            <p style="font-family: Courier; font-size:20px; padding-left:20px; margin-left: 110px; margin-top: -5px; border-left:5px solid black">
+                <b>Team member</b></p>
+
+            <p style="margin-left: 190px; margin-top: -10px;">지해성 김정현</p>
+        </div>
     </div>
-    <div class="col-sm-4">
-      <h4><p>Register Customs</p></h4>
-      <img src="birds3.jpg" alt="Image">
-    </div>
-  </div>
 </div>
 
 </body>
-
-<script>
-    $(function(){
-        $(".open_icon").click(function(){
-            $(".hidden_text").slideToggle(800);
-        });
-    });
-</script>
-
 <style>
-.back_green {
-    background-color: #ffffff;
-    border: 5px solid;
-    /*background-color: #1abc9c; /* Green */
-    color: #000000;
-}
-.back_darkblue {
-    background-color: #474e5d; /* Dark Blue */
-    color: #ffffff;
-    border: 5px solid white;
-    padding-top: 100px;
-    padding-bottom: 100px;
-}
-.back_white {
-    background-color: #ffffff; /* White */
-    color: #555555;
-    padding-top: 10px;
-}
-.back_violet {
-    background-color: #9e109e; /* Violet */
-    color: #ffffff;
-    border: 5px solid white;
-    padding-top: 200px;
-    padding-bottom: 5px;
-    vertical-align:text-bottom; transition:all 0.8s, color 0.3s 0.3s;
-    cursor: pointer;
-}
-.back_pink {
-    background-color: #DB1859; /* Pink */
-    color: #ffffff;
-    border: 5px solid white;
-    padding-top: 200px;
-    padding-bottom: 5px;
-    vertical-align:text-bottom; transition:all 0.8s, color 0.3s 0.3s;
-    cursor: pointer;
-}
-.back_skyblue {
-    background-color: #87ceeb; /* Skyblue */
-    color: #ffffff;
-    border: 5px solid white;
-    padding-top: 200px;
-    padding-bottom: 5px;
-    vertical-align:text-bottom; transition:all 0.8s, color 0.3s 0.3s;
-    cursor: pointer;
-}
-.back_deepskyblue {
-    background-color: #00bfff; /* DeepSkyblue */
-    color: #ffffff;
-    border: 5px solid white;
-    padding-top: 200px;
-    padding-bottom: 5px;
-    vertical-align:text-bottom; transition:all 0.8s, color 0.3s 0.3s;
-    cursor: pointer;
-}
-.back_gold {
-    background-color: #ffe033; /* Gold */
-    color: #ffffff;
-    border: 5px solid white;
-    padding-top: 200px;
-    padding-bottom: 5px;
-    vertical-align:text-bottom; transition:all 0.5s, color 0.3s 0.3s;
-    cursor: pointer;
-}
-.back_gold:hover, .back_pink:hover, .back_violet:hover, .back_skyblue:hover, .back_deepskyblue:hover {
-    box-shadow:1000px 1000px 1000px 1000px rgba(0,0,0,0.3) inset;
-}
+    .main_font {
+        font-family: Cursive;
+        font-size: 13pt;
+        font-style: oblique;
+        margin-left: 15px;
+        vertical-align: text-bottom;
+        padding-top: 50px;
+        padding-bottom: 5px;
+    }
 
+    .intro_background {
+        background-color: #ffffff;
+        border: 5px solid;
+        /*background-color: #1abc9c; /* Green */
+        color: #000000;
+        margin-top: 5px;
+    }
 
+    .icon_style_6, .icon_style_3 {
+        color: black;
+        font-size: 50pt;
+        margin-left: 35%;
+        padding-top: 90px
+    }
+
+    .icon_style_6 {
+        margin-left: 45%;
+    }
+
+    .icon_style_3 {
+        margin-left: 35%;
+    }
+
+    .back_darkblue {
+        background-color: #474e5d; /* Dark Blue */
+        color: #ffffff;
+        border: 5px solid white;
+        padding-top: 100px;
+        padding-bottom: 100px;
+    }
+
+    .back_white {
+        background-color: #ffffff; /* White */
+        color: #555555;
+        padding-top: 10px;
+    }
+
+    .front_violet, .front_pink, .front_skyblue, .front_deepskyblue, .front_gold, .front_green,
+    .back_violet, .back_pink, .back_skyblue, .back_deepskyblue, .back_gold, .back_green {
+
+        cursor: pointer;
+
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        -webkit-transition: -webkit-transform 0.3s;
+        transition: transform 0.3s;
+    }
+
+    .front_violet, .front_pink, .front_skyblue, .front_deepskyblue, .front_gold, .front_green {
+        color: #ffffff;
+        border: 5px solid white;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        padding-top: 150px;
+        padding-bottom: 5px;
+    }
+
+    .back_violet, .back_pink, .back_skyblue, .back_deepskyblue, .back_gold, .back_green {
+        color: #000000;
+        margin-top: 15px;
+        box-shadow: -10px -10px 10px rgba(0, 0, 0, 0.3);
+        -webkit-transform: rotateY(-180deg);
+        transform: rotateY(-180deg);
+        padding-bottom: 5px;
+    }
+
+    .front_violet, .back_violet {
+        background-color: #9e109e; /* Violet */
+    }
+
+    .front_pink, .back_pink {
+        background-color: #DB1859; /* Pink */
+    }
+
+    .front_skyblue, .back_skyblue {
+        background-color: #87ceeb; /* Skyblue */
+    }
+
+    .front_deepskyblue, .back_deepskyblue {
+        background-color: #00bfff; /* DeepSkyblue */
+    }
+
+    .front_gold, .back_gold {
+        background-color: #ffe033; /* Gold */
+    }
+
+    .front_green, .back_green {
+        background-color: #32cd32; /* LimeGreen */
+    }
+
+    .effect_hover:hover .front_gold, .effect_hover:hover .front_pink, .effect_hover:hover .front_violet,
+    .effect_hover:hover .front_skyblue, .effect_hover:hover .front_deepskyblue, .effect_hover:hover .front_green {
+        -webkit-transform: rotateY(-180deg);
+        transform: rotateY(-180deg);
+        /*box-shadow:1000px 1000px 1000px 1000px rgba(0,0,0,0.3) inset;*/
+    }
+
+    .effect_hover:hover .back_gold, .effect_hover:hover .back_pink, .effect_hover:hover .back_violet,
+    .effect_hover:hover .back_skyblue, .effect_hover:hover .back_deepskyblue, .effect_hover:hover .back_green {
+        -webkit-transform: rotateY(0deg);
+        transform: rotateY(0deg);
+    }
 </style>
 
 </html>

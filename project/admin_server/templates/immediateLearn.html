@@ -1,12 +1,17 @@
+<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utd-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta content="stuff, to, help, search, engines, not" name="keywords">
+    <meta content="What this page is about." name="description">
+    <meta content="Display Webcam Stream" name="title">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-    <script type="text/javascript"
-            src="http://cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script>
-    <script type="text/javascript" charset="utf-8"></script>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet"
+          type="text/css">
 
     <!-- 합쳐지고 최소화된 최신 CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
@@ -20,8 +25,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet"
           type="text/css">
 
-    <title>Image Upload Form</title>
-    <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
+    <title>Display Webcam Stream</title>
+
 </head>
 
 <body>
@@ -37,12 +42,15 @@
                 <p class="main_font">Main home</p>
             </div>
         </div>
-        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
-             style="margin-top: 5px; border: 5px solid black; border-bottom: 0px;">
-            <span><i class="fa fa-fw fa-camera-retro icon_style_3"></i></span>
+        <div class="effect_hover col-lg-3 col-md-3 col-sm-3 col-xs-12" onClick="window.location='/cameraStream';">
+            <div class="front_violet">
+                <p class="main_font">Camera Stream</p>
+            </div>
+            <div class="back_violet">
+                <span><i class="fa fa-fw fa-camera-retro icon_style_3"></i></span>
 
-            <p class="main_font">Camera Stream</p>
-
+                <p class="main_font">Camera Stream</p>
+            </div>
         </div>
         <div class="effect_hover col-lg-3 col-md-3 col-sm-3 col-xs-12" onClick="window.location='/state';">
             <div class="front_skyblue">
@@ -55,23 +63,8 @@
             </div>
         </div>
     </div>
-</div>
-<hr>
-<h1><p style="padding-left:10px; color: #666666; border-left:5px solid #9e109e; margin-left:10px;">Camera devices</p></h1>
-<br>
-<div class="text-center" id="loading_div">
-    <br>
-    loading...<br>
 
-    <div id="loading">●</div>
 </div>
-
-<div class="container">
-    <div id="device_panel" class="row">
-
-    </div>
-</div>
-<hr>
 <div class="container-fluid">
     <div class="row">
         <div class="effect_hover col-lg-3 col-md-3 col-sm-3 col-xs-12" onClick="window.location='/regit';">
@@ -94,17 +87,52 @@
                 <p class="main_font">Find to File</p>
             </div>
         </div>
-        <div class="effect_hover col-lg-3 col-md-3 col-sm-3 col-xs-12"
-             onClick="window.location='/immediateLearn';">
-            <div class="front_green">
-                <p class="main_font">Immediate Learning</p>
-            </div>
-            <div class="back_green">
-                <span><i class="fa fa-fw fa-pencil-square-o icon_style_3"></i></span>
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+             style="margin-top: 5px; border: 5px solid black; border-bottom: 0px; border-right: 0px;">
+            <span><i class="fa fa-fw fa-pencil-square-o icon_style_3"></i></span>
 
-                <p class="main_font">Immediate Learning</p>
-            </div>
+            <p class="main_font">Immediate Learning</p>
+
         </div>
+    </div>
+</div>
+<hr>
+<h1><p style="padding-left:10px; color: #666666; border-left:5px solid #32cd32; margin-left:10px;">Immediate Learning</p></h1>
+<br>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-center" style="border:2px dotted #32cd32" >
+            <br>
+            <video autoplay="true" id="videoElement" style="border:2px solid #111">
+            </video>
+            <br>
+            <button style="width:64px; border: solid 2px #111;" onclick="saveImageFile()">Shoot</button>
+            <br><br>
+            Name : <input id="name" type="text"/>
+            <br><br>
+            <form>
+                Kind : <input type="radio" name="c1" value=1>Missing
+                <input type="radio" name="c1" value=2>Wanted
+                <input type="radio" name="c1" value=0>Normal
+            </form>
+            <br>
+        </div>
+    </div>
+<!--
+    <form method="post" id="files" name="files" enctype="multipart/form-data" onsubmit="return submitForm();">
+        <div id="fileUpload"/>
+        <br>
+
+        <input type="submit" value="등록"/>    </form>
+-->
+    <div class="text-center">
+        <h3>- Captured Image -</h3>▽
+    </div>
+    <div id="output" style="display: inline-block; top: 4px; position: relative; border: dotted 1px #ccc; padding: 2px;"></div>
+    <div class="text-right" style="margin-top: 10px">
+        <button onclick="submitForm()">Registration</button>
     </div>
 </div>
 <hr>
@@ -134,113 +162,125 @@
     </div>
 </div>
 <script>
-    // first data send for already registered person
-    $(document).ready(function () {
-        var formData = new FormData();
-        formData.append("data", '{ }');
+    var host = "http://175.126.82.175:20100/";
+    var video = document.querySelector("#videoElement");
+    var snapshots = [];
+    var screen_data = [];
+    var max_data = 10;
+    var image_num = 0;
+    var name;
+    var imgData = [];
+
+    navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.oGetUserMedia;
+
+    if (navigator.getUserMedia) {
+        navigator.getUserMedia({video: true}, handleVideo, videoError);
+    }
+
+    function handleVideo(stream) {
+        video.src = window.URL.createObjectURL(stream);
+    }
+
+    function videoError(e) {
+        // do something
+        console.log(e)
+    }
+
+    function saveImageFile() {
+        var screen_video = document.getElementById("videoElement");
+        var output = document.getElementById("output");
+        var canvas = capture(screen_video, 0.25);
+            canvas.onclick = function() {
+                window.open(this.toDataURL());
+            };
+        image_num++;
+        snapshots.unshift(canvas);
+
+        output.innerHTML = '';
+        for(var i = 0; i < max_data; i++) {
+            output.appendChild(snapshots[i]);
+        }
+
+    }
+
+    function capture(screen_video, scaleFactor) {
+        var w = screen_video.videoWidth * scaleFactor;
+        var h = screen_video.videoHeight * scaleFactor;
+        var canvas = document.createElement("canvas");
+        canvas.width = w;
+        canvas.height = h;
+
+        var ctx = canvas.getContext("2d");
+        ctx.drawImage(video, 0, 0, w, h);
+
+        imgData[image_num] = canvas.toDataURL("img/png");
+        imgData[image_num] = imgData[image_num].replace('data:image/png;base64,', '');
+
+        return canvas;
+    }
+
+    $("#name").on('change', function () {
+        name = $(this)[0].value;
+    });
+
+    function submitForm() {
+        console.log("submit event");
+        var radio_ele = document.forms[0].elements;
+        var len = radio_ele.length;
+        var check_val;
+        for (var i = 0; i < len; i++) {
+            if (radio_ele[i].checked)
+                check_val = radio_ele[i].value;
+        }
+        if (check_val == null)
+            check_val = -1;
+
+        if (image_num < 1) {
+            alert("Not exist image files");
+            return false;
+        }
+
+        //var fd = new FormData(imgData);
+        //console.log(fd);
+        var postData = new FormData();
+        var dic = '{ "name" : "' + name + '", "kind" : "' + check_val + '" }';
+        //dic = JSON.stringify(dic);
+        postData.append("images", imgData);
+        postData.append("data", dic);
+        console.log(imgData);
+
+        //fd.append("data", dic);
+        console.log(dic);
         $.ajax({
-            url: host + "request_data",
+            url: host + "request_register_face_from_webcam",
             type: "POST",
-            data: formData,
+            data: postData,
             processData: false,  // tell jQuery not to process the data
             contentType: false   // tell jQuery not to set contentType
         }).done(function (data) {
-            // debug console
+            //debug console
             console.log("Response Output:");
             console.log(data);
-
+            /*
             var pars = JSON.parse(data);
-            var device_datas = pars["device_datas"];
-            $("#loading_div").remove();
-            // Connected devices info
-            for (var i = 0; i < device_datas.length; i++) {
-                devicePicturePanel(device_datas[i]['device_id'], device_datas[i]['image']);
+            if (pars["result"] != -1) {
+                //regitPersonPanel(pars["id"], pars["thumbnail"], pars["name"], pars["kind"]);
+                alert("Success!");
+            } else {
+                alert("Does Not exist the face");
             }
+            */
         });
-    });
-</script>
 
+    }
+</script>
 </body>
 
-<script>
-    var host = "http://175.126.82.175:20100/";
-    var kind_pic = {"-1": "black", "0": "green", "1": "blue", "2": "red"};
-    var kind_set = {"-1": "Unknown", "0": "Normal", "1": "Missing", "2": "Wanted"}
-
-    function devicePicturePanel(id, thumbnail) {
-        var device_id = 'device_' + id;
-        var thumb_id = 'device_thumb_' + id;
-        if (document.getElementById(device_id) == null) {
-            // Not exist - make new panel
-            $("#device_panel").append('<div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">' +
-                    '<div class="panel panel-primary" style="font-size: 150%">' +
-                    '<div id="' + device_id + '" class="panel-heading text-center">' +
-                    device_id +
-                    '</div>' +
-                    '<div class="panel-body" style="text-align: center">' +
-                    '<img src="' + thumbnail + '" id="' + thumb_id +
-                    '" width="240px" height="240px" style="max-width:100%">' +
-                    '</img>' +
-                    '</div>' +
-                    '</div>' +
-                    '</div>');
-        } else {
-            //Already exist - change img thumbnail
-            $('<img src="' + thumbnail + '" id="' + thumb_id +
-                    '" width="200px" height="200px" style="max-width:100%"></img>').replaceAll("#" + thumb_id);
-        }
-    }
-
-    function createSocket(address, name) {
-        socket = new WebSocket(address);
-        socketName = name;
-        socket.binaryType = "arraybuffer";
-        socket.onopen = function () {
-            console.log("Connected")
-        }
-        socket.onmessage = function (e) {
-            j = JSON.parse(e.data)
-            console.log(j["content"]["device_id"]);
-            if (j.type == "image") {
-                devicePicturePanel(j["content"]["device_id"], j['content']['image']);
-                //device panel process
-                $("#device_image").html(
-                        "<img src='" + j['content']['image'] + "' width='430px'></img>"
-                )
-            }
-        }
-        socket.onclose = function (e) {
-            if (e.target == socket) {
-                $("#serverStatus").html("Disconnected.")
-            }
-        }
-    }
-    $("#detectedFaces").html("");
-    createSocket("ws://175.126.82.175:20100/ws", "Local");
-</script>
-
 <style>
-    #loading {
-        display: inline-block;
-        width: 50px;
-        height: 50px;
-        border: 3px solid rgba(255, 255, 255, 0.3);
-        border-radius: 50%;
-        border-top-color: #fff;
-        animation: spin 1s ease-in-out infinite;
-        -webkit-animation: spin 1s ease-in-out infinite;
-    }
-
-    @keyframes spin {
-        to {
-            -webkit-transform: rotate(360deg);
-        }
-    }
-
-    @-webkit-keyframes spin {
-        to {
-            -webkit-transform: rotate(360deg);
-        }
+    #videoElement {
+        max-width: 100%;
+        height: 375px;
+        background-color: #666;
     }
 
     .main_font {

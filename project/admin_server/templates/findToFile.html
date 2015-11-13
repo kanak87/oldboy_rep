@@ -5,114 +5,313 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script>
+    <script type="text/javascript"
+            src="http://cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script>
     <script type="text/javascript" charset="utf-8"></script>
 
     <!-- 합쳐지고 최소화된 최신 CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
     <!-- 부가적인 테마 -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.2/cerulean/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.2/cerulean/bootstrap.min.css"
+          type="text/css">
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
     <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet"
+          type="text/css">
 
     <title>Image Upload Form</title>
     <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
 </head>
-<style>
-    body { padding-top: 70px; }
-</style>
+
 <body>
-    <script>
-        function submitForm() {
-            console.log("submit event");
-            var dev_id = 999;
-            var fd = new FormData(document.getElementById("files"));
-            var dic = '{ "device_id" : "' + dev_id + '" }';
-            fd.append("data", dic);
-            //fd.append("file", document.getElementById("fileUpload").files[0]);
+<div class="container-fluid">
+    <div class="row">
+        <div class="effect_hover col-lg-6 col-md-6 col-sm-6 col-xs-12" onClick="window.location='/';">
+            <div class="front_pink">
+                <p class="main_font">Main home</p>
+            </div>
+            <div class="back_pink">
+                <span><i class="fa fa-fw fa-home icon_style_6"></i></span>
 
-            $.ajax({
-              url: host + "request_face_detection_by_file",
-              type: "POST",
-              data: fd,
-              enctype: 'multipart/form-data',
-              processData: false,  // tell jQuery not to process the data
-              contentType: false   // tell jQuery not to set contentType
-            }).done(function( data ) {
-                //debug console
-                console.log("Response Output:");
-                console.log(data);
+                <p class="main_font">Main home</p>
+            </div>
+        </div>
+        <div class="effect_hover col-lg-3 col-md-3 col-sm-3 col-xs-12" onClick="window.location='/cameraStream';">
+            <div class="front_violet">
+                <p class="main_font">Camera Stream</p>
+            </div>
+            <div class="back_violet">
+                <span><i class="fa fa-fw fa-camera-retro icon_style_3"></i></span>
 
-                var pars = JSON.parse(data);
-                if(pars["result"] != -1) {
-                    $("#recv_image").empty();
-                    $("#recv_image").append('<img src="' + pars["image"] +
-                        '" width="300px" height="300px" style="max-width:100%" />');
-                } else {
-                    alert("Does Not exist the face");
-                }
-            });
-            return false;
+                <p class="main_font">Camera Stream</p>
+            </div>
+        </div>
+        <div class="effect_hover col-lg-3 col-md-3 col-sm-3 col-xs-12" onClick="window.location='/state';">
+            <div class="front_skyblue">
+                <p class="main_font">Registered Person</p>
+            </div>
+            <div class="back_skyblue">
+                <span><i class="fa fa-fw fa-user-secret icon_style_3"></i></span>
 
+                <p class="main_font">Registered Person</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="effect_hover col-lg-3 col-md-3 col-sm-3 col-xs-12" onClick="window.location='/regit';">
+            <div class="front_gold">
+                <p class="main_font">Registration</p>
+            </div>
+            <div class="back_gold">
+                <span><i class="fa fa-fw fa-user-plus icon_style_3"></i></span>
+
+                <p class="main_font">Registration</p>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+             style="margin-top: 5px; border: 5px solid black; border-bottom: 0px;">
+            <span><i class="fa fa-fw fa-map-pin icon_style_6"></i></span>
+
+            <p class="main_font">Find to File</p>
+
+        </div>
+        <div class="effect_hover col-lg-3 col-md-3 col-sm-3 col-xs-12"
+             onClick="window.location='/immediateLearn';">
+            <div class="front_green">
+                <p class="main_font">Immediate Learning</p>
+            </div>
+            <div class="back_green">
+                <span><i class="fa fa-fw fa-pencil-square-o icon_style_3"></i></span>
+
+                <p class="main_font">Immediate Learning</p>
+            </div>
+        </div>
+    </div>
+</div>
+<hr>
+<h1><p style="padding-left:10px; color: #666666; border-left:5px solid #00bfff; margin-left:10px;">Find To File</p></h1>
+<br>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3"></div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="border:2px dotted #00bfff">
+            <br>
+            <form method="post" id="files" name="files" enctype="multipart/form-data" onsubmit="return submitForm();">
+                <input id="fileUpload" type="file" name="file[]" multiple/>
+                <br>
+                <div class="text-right">
+                    <input type="submit" value="Submit"/>
+                </div>
+                <br>
+            </form>
+        </div>
+    </div>
+</div>
+<br>
+<div class="text-center">
+    <h3>- Result -</h3>▽
+</div>
+
+<div id="recv_image"></div>
+<hr>
+<div class="container-fluid" style="height:130px;">
+    <div class="row">
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+        </div>
+        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
+            <p style="font-family: fantasy; font-size: 50px; margin-top:30px;"><b>Team. Old Boy</b></p> <!--logo plz-->
+        </div>
+        <div class="col-lg-5 col-md-5 col-sm-4 col-xs-4">
+            <p style="font-family: Courier; font-size:20px; padding-left:20px; margin-left: 90px; border-left:5px solid blue">
+                <b>Mentor</b></p>
+
+            <p style="margin-left: 170px; margin-top: -10px;">한대희</p>
+
+            <p style="font-family: Courier; font-size:20px; padding-left:20px; margin-left: 100px; margin-top: -5px; border-left:5px solid red">
+                <b>Leader</b></p>
+
+            <p style="margin-left: 180px; margin-top: -10px;">정용은</p>
+
+            <p style="font-family: Courier; font-size:20px; padding-left:20px; margin-left: 110px; margin-top: -5px; border-left:5px solid black">
+                <b>Team member</b></p>
+
+            <p style="margin-left: 190px; margin-top: -10px;">지해성 김정현</p>
+        </div>
+    </div>
+</div>
+<script>
+    // file selection
+    var host = "http://175.126.82.175:20100/";
+
+    $("#fileUpload").on('change', function () {
+
+        //Get count of selected files
+        var imgPath = $(this)[0].value;
+        var extn = imgPath.substring(imgPath.lastIndexOf('.') + 1).toLowerCase();
+
+        if (extn == "gif" || extn == "png" || extn == "jpg" || extn == "jpeg") {
+            if (typeof (FileReader) == "undefined") {
+                alert("This browser does not support FileReader.");
+            }
+        } else {
+            alert("Pls select only images");
         }
-    </script>
+    });
 
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container-fluid" style="font-size: 200%">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="/" style="font-size: 120%"> TEAM OLD BOY </a>
-        </div>
+    function submitForm() {
+        console.log("submit event");
+        var dev_id = 999;
+        var fd = new FormData(document.getElementById("files"));
+        var dic = '{ "device_id" : "' + dev_id + '" }';
+        fd.append("data", dic);
+        //fd.append("file", document.getElementById("fileUpload").files[0]);
 
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="/cameraStream"> 카메라 사진 확인 </a></li>
-            <li><a href="/state"> 등록 현황 </a></li>
-            <li><a href="/regit"> 등록 하기 </a></li>
-            <li><a href="/findToFile"> 파일로 찾기 </a></li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+        $.ajax({
+            url: host + "request_face_detection_by_file",
+            type: "POST",
+            data: fd,
+            enctype: 'multipart/form-data',
+            processData: false,  // tell jQuery not to process the data
+            contentType: false   // tell jQuery not to set contentType
+        }).done(function (data) {
+            //debug console
+            console.log("Response Output:");
+            console.log(data);
 
-    <h1>Find To File</h1>
-    <br>
-
-    <form method="post" id="files" name="files" enctype="multipart/form-data" onsubmit="return submitForm();">
-        <input id="fileUpload" type="file" name="file[]" multiple />
-        <br>
-
-        <input type="submit" value="Submit" />
-    </form>
-    <label>Result</label><br>
-    <div id="recv_image"></div>
-    <script>
-        // file selection
-        var host = "http://175.126.82.175:20100/";
-
-        $("#fileUpload").on('change', function () {
-
-            //Get count of selected files
-            var imgPath = $(this)[0].value;
-            var extn = imgPath.substring(imgPath.lastIndexOf('.') + 1).toLowerCase();
-
-            if (extn == "gif" || extn == "png" || extn == "jpg" || extn == "jpeg") {
-                if (typeof (FileReader) == "undefined") {
-                    alert("This browser does not support FileReader.");
-                }
+            var pars = JSON.parse(data);
+            if (pars["result"] != -1) {
+                $("#recv_image").empty();
+                $("#recv_image").append('<img src="' + pars["image"] +
+                        '" width="300px" height="300px" style="max-width:100%" />');
             } else {
-                alert("Pls select only images");
+                alert("Does Not exist the face");
             }
         });
-    </script>
+        return false;
 
+    }
+</script>
 </body>
+<style>
+    .main_font {
+        font-family: Cursive;
+        font-size: 13pt;
+        font-style: oblique;
+        margin-left: 15px;
+        vertical-align: text-bottom;
+        padding-top: 50px;
+        padding-bottom: 5px;
+    }
 
+    .intro_background {
+        background-color: #ffffff;
+        border: 5px solid;
+        /*background-color: #1abc9c; /* Green */
+        color: #000000;
+        margin-top: 5px;
+    }
+
+    .icon_style_6, .icon_style_3 {
+        color: black;
+        font-size: 50pt;
+        margin-left: 35%;
+        padding-top: 90px
+    }
+
+    .icon_style_6 {
+        margin-left: 45%;
+    }
+
+    .icon_style_3 {
+        margin-left: 35%;
+    }
+
+    .back_darkblue {
+        background-color: #474e5d; /* Dark Blue */
+        color: #ffffff;
+        border: 5px solid white;
+        padding-top: 100px;
+        padding-bottom: 100px;
+    }
+
+    .back_white {
+        background-color: #ffffff; /* White */
+        color: #555555;
+        padding-top: 10px;
+    }
+
+    .front_violet, .front_pink, .front_skyblue, .front_deepskyblue, .front_gold, .front_green,
+    .back_violet, .back_pink, .back_skyblue, .back_deepskyblue, .back_gold, .back_green {
+
+        cursor: pointer;
+
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        -webkit-transition: -webkit-transform 0.3s;
+        transition: transform 0.3s;
+    }
+
+    .front_violet, .front_pink, .front_skyblue, .front_deepskyblue, .front_gold, .front_green {
+        color: #ffffff;
+        border: 5px solid white;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        padding-top: 150px;
+        padding-bottom: 5px;
+    }
+
+    .back_violet, .back_pink, .back_skyblue, .back_deepskyblue, .back_gold, .back_green {
+        color: #000000;
+        margin-top: 15px;
+        box-shadow: -10px -10px 10px rgba(0, 0, 0, 0.3);
+        -webkit-transform: rotateY(-180deg);
+        transform: rotateY(-180deg);
+        padding-bottom: 5px;
+    }
+
+    .front_violet, .back_violet {
+        background-color: #9e109e; /* Violet */
+    }
+
+    .front_pink, .back_pink {
+        background-color: #DB1859; /* Pink */
+    }
+
+    .front_skyblue, .back_skyblue {
+        background-color: #87ceeb; /* Skyblue */
+    }
+
+    .front_deepskyblue, .back_deepskyblue {
+        background-color: #00bfff; /* DeepSkyblue */
+    }
+
+    .front_gold, .back_gold {
+        background-color: #ffe033; /* Gold */
+    }
+
+    .front_green, .back_green {
+        background-color: #32cd32; /* LimeGreen */
+    }
+
+    .effect_hover:hover .front_gold, .effect_hover:hover .front_pink, .effect_hover:hover .front_violet,
+    .effect_hover:hover .front_skyblue, .effect_hover:hover .front_deepskyblue, .effect_hover:hover .front_green {
+        -webkit-transform: rotateY(-180deg);
+        transform: rotateY(-180deg);
+        /*box-shadow:1000px 1000px 1000px 1000px rgba(0,0,0,0.3) inset;*/
+    }
+
+    .effect_hover:hover .back_gold, .effect_hover:hover .back_pink, .effect_hover:hover .back_violet,
+    .effect_hover:hover .back_skyblue, .effect_hover:hover .back_deepskyblue, .effect_hover:hover .back_green {
+        -webkit-transform: rotateY(0deg);
+        transform: rotateY(0deg);
+    }
+</style>
 </html>
