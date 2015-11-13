@@ -375,17 +375,15 @@ def request_face_detection_from_webcam():
             if file and allowed_file(file.filename):
                 images.append(stream_to_image(file))
 
-                if app.config['IMAGE_STORE'] is True:
-                    save_path = os.path.join(app.config['IMAGE_FOLDER'], file.filename)
-                    save_array(images[len(images) - 1], save_path)
-
         image = images[0]
         detected_faces = faceService.predict(image)
 
         # results.append((identity, bb, result_proba_list[identity]))
+        faceDetected = False
         detected_faces_result = []
         if detected_faces is not None:
             for face in detected_faces:
+                faceDetected  = True
                 if face[0] is not -1:
                     user = faceDatabase.find_user_by_index(face[0])
                     detected_entity = {
@@ -426,6 +424,9 @@ def request_face_detection_from_webcam():
         for protocol in faceDetectSocketList:
             protocol.sendMessage(json.dumps(msg))
 
+        if faceDetected is True and app.config['IMAGE_STORE'] is True:
+            save_path = os.path.join(app.config['IMAGE_FOLDER'], file.filename)
+            save_array(image, save_path)
 
     except Exception as e:
         print "-" * 60
