@@ -4,6 +4,7 @@
     <meta charset="utd-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta id="host_data" data-addr="{{inet_addr}}">
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <script type="text/javascript"
             src="http://cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script>
@@ -24,6 +25,7 @@
     <title>Image Upload Form</title>
     <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
 </head>
+
 <body>
 <div class="container-fluid">
     <div class="row">
@@ -62,22 +64,22 @@
 </div>
 <div class="container-fluid">
     <div class="row">
-        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
-             style="margin-top: 5px; border: 5px solid black; border-bottom: 0px; border-left: 0px;">
-            <span><i class="fa fa-fw fa-user-plus icon_style_3"></i></span>
+        <div class="effect_hover col-lg-3 col-md-3 col-sm-3 col-xs-12" onClick="window.location='/regit';">
+            <div class="front_gold">
+                <p class="main_font">Registration</p>
+            </div>
+            <div class="back_gold">
+                <span><i class="fa fa-fw fa-user-plus icon_style_3"></i></span>
 
-            <p class="main_font">Registration</p>
-
+                <p class="main_font">Registration</p>
+            </div>
         </div>
-        <div class="effect_hover col-lg-6 col-md-6 col-sm-6 col-xs-12" onClick="window.location='/findToFile';">
-            <div class="front_deepskyblue">
-                <p class="main_font">Find to File</p>
-            </div>
-            <div class="back_deepskyblue">
-                <span><i class="fa fa-fw fa-map-pin icon_style_6"></i></span>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+             style="margin-top: 5px; border: 5px solid black; border-bottom: 0px;">
+            <span><i class="fa fa-fw fa-map-pin icon_style_6"></i></span>
 
-                <p class="main_font">Find to File</p>
-            </div>
+            <p class="main_font">Find to File</p>
+
         </div>
         <div class="effect_hover col-lg-3 col-md-3 col-sm-3 col-xs-12"
              onClick="window.location='/immediateLearn';">
@@ -93,37 +95,30 @@
     </div>
 </div>
 <hr>
-<h1><p style="padding-left:10px; color: #666666; border-left:5px solid #ffe033; margin-left:10px;">Registration</p></h1><br>
+<h1><p style="padding-left:10px; color: #666666; border-left:5px solid #00bfff; margin-left:10px;">Find To File</p></h1>
+<br>
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3"></div>
-        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="border:2px dotted #ffe033">
-            <br>
-            Name : <input id="name" type="text"/>
-            <br><br>
-            <form>
-                Kind : <input type="radio" name="c1" value=1>Missing
-                <input type="radio" name="c1" value=2>Wanted
-                <input type="radio" name="c1" value=0>Normal
-            </form>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="border:2px dotted #00bfff">
             <br>
             <form method="post" id="files" name="files" enctype="multipart/form-data" onsubmit="return submitForm();">
                 <input id="fileUpload" type="file" name="file[]" multiple/>
                 <br>
                 <div class="text-right">
-                    <input type="submit" value="Registration"/>
+                    <input type="submit" value="Submit"/>
                 </div>
+                <br>
             </form>
-            <br>
         </div>
     </div>
-    <br>
-    <div class="text-center">
-        <h3>- Image Files -</h3>▽
-    </div>
-    <div id="image-holder"></div>
+</div>
+<br>
+<div class="text-center">
+    <h3>- Result -</h3>▽
 </div>
 
+<div id="recv_image"></div>
 <hr>
 <div class="container-fluid" style="height:130px;">
     <div class="row">
@@ -145,55 +140,23 @@
 
             <p style="font-family: Courier; font-size:20px; padding-left:20px; margin-left: 110px; margin-top: -5px; border-left:5px solid black">
                 <b>Team member</b></p>
-
             <p style="margin-left: 190px; margin-top: -10px;">지해성 김정현</p>
         </div>
     </div>
 </div>
-
 <script>
     // file selection
+    var host_data = $("#host_data").data();
+    var host = "http://"+ host_data["addr"] +":20100/";
 
-    var host = "http://175.126.82.175:20100/";
-    var kind_pic = {"-1": "black", "0": "green", "1": "blue", "2": "red"};
-    var kind_set = {"-1": "Unknown", "0": "Normal", "1": "Missing", "2": "Wanted"}
-
-    var countFiles = 0;
-    var file_list;
-    var name;
-    $("#name").on('change', function () {
-        name = $(this)[0].value;
-    })
     $("#fileUpload").on('change', function () {
 
         //Get count of selected files
         var imgPath = $(this)[0].value;
         var extn = imgPath.substring(imgPath.lastIndexOf('.') + 1).toLowerCase();
-        var image_holder = $("#image-holder");
-
-        countFiles = $(this)[0].files.length;
-        file_list = new Array(countFiles);
-
-        image_holder.empty();
 
         if (extn == "gif" || extn == "png" || extn == "jpg" || extn == "jpeg") {
-            if (typeof (FileReader) != "undefined") {
-                //loop for each file selected for uploaded.
-                for (var i = 0; i < countFiles; i++) {
-
-                    var reader = new FileReader();
-                    reader.onload = function (e) {
-                        $("<img />", {
-                            "src": e.target.result,
-                            "class": "thumb-image",
-                            "style": "margin-left:10px; border: 2px solid black"
-                        }).width(150).height(150).appendTo(image_holder);
-                    }
-                    image_holder.show();
-                    reader.readAsDataURL($(this)[0].files[i]);
-                }
-
-            } else {
+            if (typeof (FileReader) == "undefined") {
                 alert("This browser does not support FileReader.");
             }
         } else {
@@ -203,27 +166,14 @@
 
     function submitForm() {
         console.log("submit event");
-        var radio_ele = document.forms[0].elements;
-        var len = radio_ele.length;
-        var check_val;
-        for (var i = 0; i < len; i++) {
-            if (radio_ele[i].checked)
-                check_val = radio_ele[i].value;
-        }
-        if (check_val == null)
-            check_val = -1;
-
-        if (countFiles < 1) {
-            alert("Not exist image files");
-            return false;
-        }
-
+        var dev_id = 999;
         var fd = new FormData(document.getElementById("files"));
-        var dic = '{ "name" : "' + name + '", "kind" : "' + check_val + '" }';
+        var dic = '{ "device_id" : "' + dev_id + '" }';
         fd.append("data", dic);
+        //fd.append("file", document.getElementById("fileUpload").files[0]);
 
         $.ajax({
-            url: host + "request_register_face",
+            url: host + "request_face_detection_by_file",
             type: "POST",
             data: fd,
             enctype: 'multipart/form-data',
@@ -233,10 +183,12 @@
             //debug console
             console.log("Response Output:");
             console.log(data);
+
             var pars = JSON.parse(data);
             if (pars["result"] != -1) {
-                //regitPersonPanel(pars["id"], pars["thumbnail"], pars["name"], pars["kind"]);
-                alert("Success!");
+                $("#recv_image").empty();
+                $("#recv_image").append('<img src="' + pars["image"] +
+                        '" width="300px" height="300px" style="max-width:100%" />');
             } else {
                 alert("Does Not exist the face");
             }

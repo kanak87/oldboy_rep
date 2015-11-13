@@ -10,7 +10,7 @@ from twisted.web.server import Site
 from twisted.web.wsgi import WSGIResource
 from autobahn.twisted.websocket import WebSocketServerFactory, WebSocketServerProtocol
 from autobahn.twisted.resource import WebSocketResource, WSGIRootResource
-from flask import Flask, request, send_from_directory
+from flask import Flask, request, send_from_directory, render_template
 from flask.ext.cors import cross_origin
 from werkzeug.utils import secure_filename
 
@@ -27,6 +27,63 @@ app.config['IMAGE_FOLDER'] = './images/'
 
 faceDetectSocketList = []
 
+inet_addr = get_inet_addr();
+
+@app.route('/')
+@cross_origin()
+def show_index():
+    # Used ajax, because already exist data in javascript
+    global inet_addr
+    templateData = {'title': 'Face Detector',
+                    'inet_addr': inet_addr
+                    }
+    return render_template('index.html', **templateData)
+
+
+@app.route('/regit')
+@cross_origin()
+def registration():
+    templateData = {'title': 'Face Detector',
+                    'inet_addr': inet_addr
+                    }
+    return render_template('registration.html', **templateData)
+
+
+@app.route('/findToFile')
+@cross_origin()
+def findToFile():
+    templateData = {'title': 'Face Detector',
+                    'inet_addr': inet_addr
+                    }
+    return render_template('findToFile.html', **templateData)
+
+
+@app.route('/state')
+@cross_origin()
+def state():
+    templateData = {'title': 'Face Detector',
+                    'inet_addr': inet_addr
+                    }
+    return render_template('state.html', **templateData)
+
+
+@app.route('/cameraStream')
+@cross_origin()
+def cameraStream():
+    templateData = {'title': 'Face Detector',
+                    'inet_addr': inet_addr
+                    }
+    return render_template('cameraStream.html', **templateData)
+
+
+@app.route('/immediateLearn')
+@cross_origin()
+def immediateLearn():
+    templateData = {'title': 'Face Detector',
+                    'inet_addr': inet_addr
+                    }
+    return render_template('immediateLearn.html', **templateData)
+
 
 class FaceDetectReceiveSocket(WebSocketServerProtocol):
     def onConnect(self, request):
@@ -37,12 +94,6 @@ class FaceDetectReceiveSocket(WebSocketServerProtocol):
 
     def onMessage(self, payload, isBinary):
         print payload
-
-
-@app.route("/")
-@cross_origin()
-def hello():
-    return "Hello World!"
 
 
 @app.route("/request_data", methods=['POST'])

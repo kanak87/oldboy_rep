@@ -1,13 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utd-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta content="stuff, to, help, search, engines, not" name="keywords">
+    <meta content="What this page is about." name="description">
+    <meta content="Display Webcam Stream" name="title">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-    <script type="text/javascript"
-            src="http://cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script>
-    <script type="text/javascript" charset="utf-8"></script>
+    <meta id="host_data" data-addr="{{inet_addr}}">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet"
+          type="text/css">
 
     <!-- 합쳐지고 최소화된 최신 CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
@@ -21,8 +26,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet"
           type="text/css">
 
-    <title>Image Upload Form</title>
-    <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
+    <title>Display Webcam Stream</title>
+
 </head>
 
 <body>
@@ -73,51 +78,58 @@
                 <p class="main_font">Registration</p>
             </div>
         </div>
-        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
-             style="margin-top: 5px; border: 5px solid black; border-bottom: 0px;">
-            <span><i class="fa fa-fw fa-map-pin icon_style_6"></i></span>
+        <div class="effect_hover col-lg-6 col-md-6 col-sm-6 col-xs-12" onClick="window.location='/findToFile';">
+            <div class="front_deepskyblue">
+                <p class="main_font">Find to File</p>
+            </div>
+            <div class="back_deepskyblue">
+                <span><i class="fa fa-fw fa-map-pin icon_style_6"></i></span>
 
-            <p class="main_font">Find to File</p>
-
+                <p class="main_font">Find to File</p>
+            </div>
         </div>
-        <div class="effect_hover col-lg-3 col-md-3 col-sm-3 col-xs-12"
-             onClick="window.location='/immediateLearn';">
-            <div class="front_green">
-                <p class="main_font">Immediate Learning</p>
-            </div>
-            <div class="back_green">
-                <span><i class="fa fa-fw fa-pencil-square-o icon_style_3"></i></span>
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+             style="margin-top: 5px; border: 5px solid black; border-bottom: 0px; border-right: 0px;">
+            <span><i class="fa fa-fw fa-pencil-square-o icon_style_3"></i></span>
 
-                <p class="main_font">Immediate Learning</p>
-            </div>
+            <p class="main_font">Immediate Learning</p>
+
         </div>
     </div>
 </div>
 <hr>
-<h1><p style="padding-left:10px; color: #666666; border-left:5px solid #00bfff; margin-left:10px;">Find To File</p></h1>
+<h1><p style="padding-left:10px; color: #666666; border-left:5px solid #32cd32; margin-left:10px;">Immediate Learning</p></h1>
 <br>
 <div class="container-fluid">
     <div class="row">
-        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3"></div>
-        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="border:2px dotted #00bfff">
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-center" style="border:2px dotted #32cd32" >
             <br>
-            <form method="post" id="files" name="files" enctype="multipart/form-data" onsubmit="return submitForm();">
-                <input id="fileUpload" type="file" name="file[]" multiple/>
-                <br>
-                <div class="text-right">
-                    <input type="submit" value="Submit"/>
-                </div>
-                <br>
+            <video autoplay="true" id="videoElement" style="border:2px solid #111">
+            </video>
+            <br>
+            <button style="width:64px; border: solid 2px #111;" onclick="saveImageFile()">Shoot</button>
+            <br><br>
+            Name : <input id="name" type="text"/>
+            <br><br>
+            <form>
+                Kind : <input type="radio" name="c1" value=1>Missing
+                <input type="radio" name="c1" value=2>Wanted
+                <input type="radio" name="c1" value=0>Normal
             </form>
+            <br>
         </div>
     </div>
-</div>
-<br>
-<div class="text-center">
-    <h3>- Result -</h3>▽
-</div>
 
-<div id="recv_image"></div>
+    <div class="text-center">
+        <h3>- Captured Image -</h3>▽
+    </div>
+    <div id="output" style="display: inline-block; top: 4px; position: relative; border: dotted 1px #ccc; padding: 2px;"></div>
+    <div class="text-right" style="margin-top: 10px">
+        <button onclick="submitForm()">Registration</button>
+    </div>
+</div>
 <hr>
 <div class="container-fluid" style="height:130px;">
     <div class="row">
@@ -145,37 +157,117 @@
     </div>
 </div>
 <script>
-    // file selection
-    var host = "http://175.126.82.175:20100/";
+    var host_data = $("#host_data").data();
+    var host = "http://"+ host_data["addr"] +":20100/";
+    var video = document.querySelector("#videoElement");
+    var snapshots = [];
+    var screen_data = [];
+    var max_data = 10;
+    var image_num = 0;
+    var name;
+    var imgData = [];
 
-    $("#fileUpload").on('change', function () {
+    navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.oGetUserMedia;
 
-        //Get count of selected files
-        var imgPath = $(this)[0].value;
-        var extn = imgPath.substring(imgPath.lastIndexOf('.') + 1).toLowerCase();
+    if (navigator.getUserMedia) {
+        navigator.getUserMedia({video: true}, handleVideo, videoError);
+    }
 
-        if (extn == "gif" || extn == "png" || extn == "jpg" || extn == "jpeg") {
-            if (typeof (FileReader) == "undefined") {
-                alert("This browser does not support FileReader.");
-            }
-        } else {
-            alert("Pls select only images");
+    function handleVideo(stream) {
+        video.src = window.URL.createObjectURL(stream);
+    }
+
+    function videoError(e) {
+        // do something
+        console.log(e)
+    }
+
+    function saveImageFile() {
+        var screen_video = document.getElementById("videoElement");
+        var output = document.getElementById("output");
+        var canvas = capture(screen_video, 0.25);
+            canvas.onclick = function() {
+                window.open(this.toDataURL());
+            };
+        image_num++;
+        snapshots.unshift(canvas);
+
+        output.innerHTML = '';
+        for(var i = 0; i < max_data; i++) {
+            output.appendChild(snapshots[i]);
         }
+
+    }
+
+    function capture(screen_video, scaleFactor) {
+        var w = screen_video.videoWidth * scaleFactor;
+        var h = screen_video.videoHeight * scaleFactor;
+        var canvas = document.createElement("canvas");
+        canvas.width = w;
+        canvas.height = h;
+
+        var ctx = canvas.getContext("2d");
+        ctx.drawImage(video, 0, 0, w, h);
+
+        imgData[image_num] = canvas.toDataURL("img/png");
+        imgData[image_num] = dataURItoBlob(imgData[image_num]);
+
+        return canvas;
+    }
+
+    function dataURItoBlob(dataURI) {
+        // convert base64/URLEncoded data component to raw binary data held in a string
+        var byteString;
+        if (dataURI.split(',')[0].indexOf('base64') >= 0)
+            byteString = atob(dataURI.split(',')[1]);
+        else
+            byteString = unescape(dataURI.split(',')[1]);
+
+        // separate out the mime component
+        var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+
+        // write the bytes of the string to a typed array
+        var ia = new Uint8Array(byteString.length);
+        for (var i = 0; i < byteString.length; i++) {
+            ia[i] = byteString.charCodeAt(i);
+        }
+
+        return new Blob([ia], {type: mimeString});
+    }
+
+    $("#name").on('change', function () {
+        name = $(this)[0].value;
     });
 
     function submitForm() {
         console.log("submit event");
-        var dev_id = 999;
-        var fd = new FormData(document.getElementById("files"));
-        var dic = '{ "device_id" : "' + dev_id + '" }';
-        fd.append("data", dic);
-        //fd.append("file", document.getElementById("fileUpload").files[0]);
+        var radio_ele = document.forms[0].elements;
+        var len = radio_ele.length;
+        var check_val;
+        for (var i = 0; i < len; i++) {
+            if (radio_ele[i].checked)
+                check_val = radio_ele[i].value;
+        }
+        if (check_val == null)
+            check_val = -1;
+
+        if (image_num < 1) {
+            alert("Not exist image files");
+            return false;
+        }
+
+        var postData = new FormData();
+        var dic = '{ "name" : "' + name + '", "kind" : "' + check_val + '" }';
+        for(var i = 0; i < image_num; i++) {
+            postData.append("file[]", imgData[i], i + '.png');
+        }
+        postData.append("data", dic);
 
         $.ajax({
-            url: host + "request_face_detection_by_file",
+            url: host + "request_register_face",
             type: "POST",
-            data: fd,
-            enctype: 'multipart/form-data',
+            data: postData,
+            contentType: 'multipart/form-data',
             processData: false,  // tell jQuery not to process the data
             contentType: false   // tell jQuery not to set contentType
         }).done(function (data) {
@@ -185,19 +277,24 @@
 
             var pars = JSON.parse(data);
             if (pars["result"] != -1) {
-                $("#recv_image").empty();
-                $("#recv_image").append('<img src="' + pars["image"] +
-                        '" width="300px" height="300px" style="max-width:100%" />');
+                alert("Success!");
             } else {
                 alert("Does Not exist the face");
             }
+
         });
         return false;
-
     }
 </script>
 </body>
+
 <style>
+    #videoElement {
+        max-width: 100%;
+        height: 375px;
+        background-color: #666;
+    }
+
     .main_font {
         font-family: Cursive;
         font-size: 13pt;
@@ -314,4 +411,5 @@
         transform: rotateY(0deg);
     }
 </style>
+
 </html>
