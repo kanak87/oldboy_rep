@@ -1,13 +1,9 @@
-import base64
 import json
-import urllib
-import StringIO
 
-from PIL import Image
 import cv2
 import requests
 
-video_capture = cv2.VideoCapture(1)
+video_capture = cv2.VideoCapture(0)
 #video_capture.set(3, 1024)
 #video_capture.set(4, 768)
 #video_capture.set(15, -8.0)
@@ -21,7 +17,7 @@ while True:
     # Capture frame-by-frame
     ret, frame = video_capture.read()
 
-    cv2.imshow('Video', frame)
+    #cv2.imshow('Video', frame)
     cv2.imwrite('img.png', frame, params)
 
     json_data = { "device_id" : 1010 }

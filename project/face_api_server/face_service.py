@@ -178,7 +178,7 @@ class FaceService(object):
         results = []
 
         bbs = self.align.getAllFaceBoundingBoxes(image)
-        print "-" * 60
+
         for bb_index, bb in enumerate(bbs):
             alignedFace = self.align.alignImg("affine", 96, image, bb)
             if alignedFace is None:
