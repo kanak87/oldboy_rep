@@ -425,7 +425,8 @@ def request_face_detection_from_webcam():
             protocol.sendMessage(json.dumps(msg))
 
         if faceDetected is True and app.config['IMAGE_STORE'] is True:
-            save_path = os.path.join(app.config['IMAGE_FOLDER'], file.filename)
+            filename = now_datetime_to_filename('png')
+            save_path = os.path.join(app.config['IMAGE_FOLDER'], filename)
             save_array(image, save_path)
 
     except Exception as e:
