@@ -180,20 +180,14 @@
                     '<div id="' + device_id + '" class="panel-heading text-center">' +
                     device_id +
                     '</div>' +
-                    '<div class="panel-body" style="text-align: center">' +
-                    '<img src="' + thumbnail + '" id="' + thumb_id +
-                    '" width="240px" height="240px" style="max-width:100%">' +
+                    '<div class="panel-body" style="text-align: center" id="' + thumb_id + '">' +
+                    '<img src="' + thumbnail + '" width="430px" style="max-width:100%">' +
                     '</img>' +
                     '</div>' +
                     '</div>' +
                     '</div>');
-        } else {
-            //Already exist - change img thumbnail
-            $('<img src="' + thumbnail + '" id="' + thumb_id +
-                    '" width="200px" height="200px" style="max-width:100%"></img>').replaceAll("#" + thumb_id);
-        }
+	}
     }
-
     function createSocket(address, name) {
         socket = new WebSocket(address);
         socketName = name;
@@ -207,10 +201,11 @@
             if (j.type == "image") {
                 devicePicturePanel(j["content"]["device_id"], j['content']['image']);
                 //device panel process
-                $("#device_image").html(
-                        "<img src='" + j['content']['image'] + "' width='430px'></img>"
+		var thumb_id = "device_thumb_" + j["content"]["device_id"];
+                $("#" + thumb_id).html(
+                    "<img src='" + j["content"]["image"] + "' width='430px' style='max-width:100%'></img>"
                 )
-            }
+	    }
         }
         socket.onclose = function (e) {
             if (e.target == socket) {
