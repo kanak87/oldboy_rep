@@ -144,6 +144,11 @@
         </div>
     </div>
 </div>
+
+<div class="text-center" id="loading_div">
+
+</div>
+
 <script>
     // file selection
     var host_data = $("#host_data").data();
@@ -172,6 +177,11 @@
         fd.append("data", dic);
         //fd.append("file", document.getElementById("fileUpload").files[0]);
 
+        $("#loading_div").append('<br>' +
+            'loading...<br>' +
+            '<div id="loading">●</div>'
+        );
+
         $.ajax({
             url: host + "request_face_detection_by_file",
             type: "POST",
@@ -187,17 +197,17 @@
             var pars = JSON.parse(data);
             if (pars["result"] != -1) {
                 $("#recv_image").empty();
-		$("#recv_image").append('<div class="text-center"><img src="' + pars["image"] +
+		        $("#recv_image").append('<div class="text-center"><img src="' + pars["image"] +
                         '" width="300px" height="300px" style="max-width:100%"/></div>');
-		var info = pars["detected_faces"];
-		for(var i = 0; i < info.length; i++) {
-		    console.log(info[i]["name"]);
-		    $("#recv_image").append('<div class="text-center"><h2>' + info[i]["name"] + '</h2> Probability : ' +
-		        parseInt(info[i]["probability"]*1000)/10 + '%</div><br>');
-		}
+		        var info = pars["detected_faces"];
+		        for(var i = 0; i < info.length; i++) {
+		            $("#recv_image").append('<div class="text-center"><h2>' + info[i]["name"] + '</h2> Probability : ' +
+		                parseInt(info[i]["probability"]*1000)/10 + '%</div><br>');
+		        }
             } else {
                 alert("Does Not exist the face");
             }
+            $("#loading_div").remove();
         });
         return false;
 
@@ -205,6 +215,29 @@
 </script>
 </body>
 <style>
+    #loading {
+        display: inline-block;
+        width: 50px;
+        height: 50px;
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top-color: #fff;
+        animation: spin 1s ease-in-out infinite;
+        -webkit-animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+        to {
+            -webkit-transform: rotate(360deg);
+        }
+    }
+
+    @-webkit-keyframes spin {
+        to {
+            -webkit-transform: rotate(360deg);
+        }
+    }
+
     .main_font {
         font-family: Cursive;
         font-size: 13pt;
