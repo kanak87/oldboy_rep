@@ -207,64 +207,38 @@
                 var effect = $(this).data('effect');
                 var present_name = $(this).data('id');
 
-                //result = confirm('삭제 하시겠습니까');
-                //if(result) {
-                $(this).closest('.panel')[effect]();
+                result = confirm('삭제 하시겠습니까');
+                if(result) {
+                    $(this).closest('.panel')[effect]();
+		
+                    // delete_request message
+                    var formData = new FormData();
+                    var req_msg = '{ "name" : "' + present_name + '" }';
 
-                // delete_request message
-                var formData = new FormData();
-                var req_msg = '{ "name" : "' + present_name + '" }';
+                    // use only id, not name.
+                    if (present_name == name) {
+                        formData.append("data", req_msg);
+                        $.ajax({
+                            url: host + "request_unregister_face",
+                            type: "POST",
+                            data: formData,
+                            processData: false,  // tell jQuery not to process the data
+                            contentType: false   // tell jQuery not to set contentType
+                        }).done(function (data) {
+                            console.log("Response Output:");
+                            console.log(data);
 
-                // use only id, not name.
-                if (present_name == name) {
-                    formData.append("data", req_msg);
-                    $.ajax({
-                        url: host + "request_unregister_face",
-                        type: "POST",
-                        data: formData,
-                        processData: false,  // tell jQuery not to process the data
-                        contentType: false   // tell jQuery not to set contentType
-                    }).done(function (data) {
-                        console.log("Response Output:");
-                        console.log(data);
-
-                        var pars = JSON.parse(data);
-                        console.log(pars);
-                    });
+                            var pars = JSON.parse(data);
+                            console.log(pars);
+                        });
+                    }
                 }
-                //}
 
             })
         });
 
     }
 
-    function createSocket(address, name) {
-        socket = new WebSocket(address);
-        socketName = name;
-        socket.binaryType = "arraybuffer";
-        socket.onopen = function () {
-            console.log("Connected")
-        }
-        socket.onmessage = function (e) {
-            j = JSON.parse(e.data)
-            console.log(j["content"]["device_id"]);
-            if (j.type == "image") {
-                devicePicturePanel(j["content"]["device_id"], j['content']['image']);
-                //device panel process
-                $("#device_image").html(
-                        "<img src='" + j['content']['image'] + "' width='430px'></img>"
-                )
-            }
-        }
-        socket.onclose = function (e) {
-            if (e.target == socket) {
-                $("#serverStatus").html("Disconnected.")
-            }
-        }
-    }
-    $("#detectedFaces").html("");
-    createSocket("ws://" + host_data["addr"] + ":20100/ws", "Local");
 </script>
 <style>
     #loading {
