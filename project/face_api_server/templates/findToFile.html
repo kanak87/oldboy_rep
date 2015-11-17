@@ -187,8 +187,14 @@
             var pars = JSON.parse(data);
             if (pars["result"] != -1) {
                 $("#recv_image").empty();
-                $("#recv_image").append('<img src="' + pars["image"] +
-                        '" width="300px" height="300px" style="max-width:100%" />');
+		$("#recv_image").append('<div class="text-center"><img src="' + pars["image"] +
+                        '" width="300px" height="300px" style="max-width:100%"/></div>');
+		var info = pars["detected_faces"];
+		for(var i = 0; i < info.length; i++) {
+		    console.log(info[i]["name"]);
+		    $("#recv_image").append('<div class="text-center"><h2>' + info[i]["name"] + '</h2> Probability : ' +
+		        parseInt(info[i]["probability"]*1000)/10 + '%</div><br>');
+		}
             } else {
                 alert("Does Not exist the face");
             }

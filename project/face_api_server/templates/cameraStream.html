@@ -175,13 +175,13 @@
         var thumb_id = 'device_thumb_' + id;
         if (document.getElementById(device_id) == null) {
             // Not exist - make new panel
-            $("#device_panel").append('<div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">' +
+            $("#device_panel").append('<div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">' +
                     '<div class="panel panel-primary" style="font-size: 150%">' +
                     '<div id="' + device_id + '" class="panel-heading text-center">' +
                     device_id +
                     '</div>' +
                     '<div class="panel-body" style="text-align: center" id="' + thumb_id + '">' +
-                    '<img src="' + thumbnail + '" width="430px" style="max-width:100%">' +
+                    '<img src="' + thumbnail + '" height="430px" width="430px" style="max-width:100%">' +
                     '</img>' +
                     '</div>' +
                     '</div>' +
@@ -203,7 +203,7 @@
                 //device panel process
 		var thumb_id = "device_thumb_" + j["content"]["device_id"];
                 $("#" + thumb_id).html(
-                    "<img src='" + j["content"]["image"] + "' width='430px' style='max-width:100%'></img>"
+                    "<img src='" + j["content"]["image"] + "' height='430' width='430px' style='max-width:100%'></img>"
                 )
 	    }
         }

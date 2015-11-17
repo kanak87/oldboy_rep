@@ -210,8 +210,8 @@
         ctx.drawImage(video, 0, 0, w, h);
 
         imgData[image_num] = canvas.toDataURL("img/png");
+	console.log(imgData[0]);
         imgData[image_num] = dataURItoBlob(imgData[image_num]);
-
         return canvas;
     }
 
