@@ -4,26 +4,69 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:weightSum="10">
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="hello"
-        />
-    <Button
-        android:id="@+id/startcamerapreview"
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:text="- Start Camera Preview -"
-        android:layout_weight="1" />
-    <Button
-        android:id="@+id/stopcamerapreview"
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:text="- Stop Camera Preview -"
-        android:layout_weight="1" />
-    <SurfaceView
-        android:id="@+id/surfaceview"
+
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="5" />
+        android:layout_weight="1"
+        android:weightSum="5">
+
+        <Button
+            android:id="@+id/startcamerapreview"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="Camera on!"
+            android:layout_weight="2" />
+
+        <Button
+            android:id="@+id/stopcamerapreview"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="Camera off!"
+            android:layout_weight="2" />
+
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:id="@+id/imageButton"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="7"
+        android:orientation="vertical"
+        android:weightSum="2">
+
+        <SurfaceView
+            android:id="@+id/surfaceview"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:id="@+id/imageView"
+            android:layout_weight="0" />
+    </LinearLayout>
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:id="@+id/horizontalScrollView"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="2"
+        android:fillViewport="false">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/scroll_layout"></LinearLayout>
+    </HorizontalScrollView>
+
 </LinearLayout>
