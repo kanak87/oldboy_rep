@@ -10,18 +10,18 @@ public class data {
     public String message;
     public String device_id;
     public String img;
-    public class detected_faces{
+    public class detected_entity{
         public String id;
         public String name;
         public int probability;
         public int[] boundingbox;
         public String thumbnail;
 
-        public detected_faces(){
+        public detected_entity(){
 
         }
     }
-    public ArrayList<detected_faces> faces_list;
+    public ArrayList<detected_entity> faces_list;
 
     public data(){
     }
@@ -41,6 +41,6 @@ public class data {
 
     public void setimg(String img) {this.img=img;}
 
-    public detected_faces getDetected(int index) { return faces_list.get(index);}
+    public detected_entity getDetected(int index) { return faces_list.get(index);}
 
 }
