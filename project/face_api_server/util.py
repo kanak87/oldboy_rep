@@ -1,6 +1,10 @@
+# -*- coding: utf-8 -*-
+
 import base64
 import StringIO
 import cStringIO
+import json
+from time import sleep
 import urllib
 
 import cv2
@@ -8,6 +12,7 @@ import datetime
 import netifaces
 import numpy as np
 from PIL import Image
+import requests
 from proxy.face_database import FaceKind
 
 
@@ -23,6 +28,7 @@ def image_to_nparray(image):
     rgbFrame[:, :, 1] = buf[:, :, 1]
     rgbFrame[:, :, 2] = buf[:, :, 2]
 
+    sleep(1)
     return rgbFrame
 
 
@@ -104,6 +110,7 @@ def now_datetime_to_filename(ext):
 
     return filename
 
+
 def get_inet_addr():
     interfaces = netifaces.interfaces()
     for i in interfaces:
@@ -113,3 +120,25 @@ def get_inet_addr():
         if iface != None:
             for j in iface:
                 return j['addr']
+
+
+def send_sms(device_id, name):
+    appid = 'oldboy'
+    apikey = 'f546be3c87a011e5b1690cc47a1fcfae'
+    sender = '01071211947'
+    receivers = ['01096886656', '01071211947', '01022688119', '01021010255']
+    content = u'[Oldboy] %s(이)가 %s에서 발견되었습니다.' % (name, str(device_id))
+
+    url = 'https://api.bluehouselab.com/smscenter/v1.0/sendsms'
+    params = {
+        'sender': sender,
+        'receivers': receivers,
+        'content': content,
+    }
+    headers = {'Content-type': 'application/json; charset=utf-8', }
+    r = requests.post(url, data=json.dumps(params),
+                      auth=(appid, apikey), headers=headers)
+
+    print r.status_code, r.reason
+    if r.status_code == 200:
+        print r.json()
