@@ -450,6 +450,11 @@ def request_face_detection_from_webcam():
                         "boundingbox": [face[1].left(), face[1].top(), face[1].right(), face[1].bottom()],
                         "thumbnail": user.thumbnail
                     }
+
+                    if user.kind is 1 or user.kind is 2:
+                        needSendSms = redisProxy.update_detection(device_id, user.identity)
+                        if needSendSms is True:
+                            send_sms(device_id, user.name, face[2])
                 else:
                     detected_entity = {
                         "id": -1,
@@ -549,7 +554,7 @@ def request_face_detection_by_file():
                     if user.kind is 1 or user.kind is 2:
                         needSendSms = redisProxy.update_detection(device_id, user.identity)
                         if needSendSms is True:
-                            send_sms(device_id, user.name)
+                            send_sms(device_id, user.name, face[2])
                 else:
                     detected_entity = {
                         "id": -1,

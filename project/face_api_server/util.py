@@ -122,12 +122,22 @@ def get_inet_addr():
                 return j['addr']
 
 
-def send_sms(device_id, name):
-    appid = 'oldboy'
-    apikey = 'f546be3c87a011e5b1690cc47a1fcfae'
-    sender = '01071211947'
-    receivers = ['01096886656', '01071211947', '01022688119', '01021010255']
-    content = u'[Oldboy] %s(이)가 %s에서 발견되었습니다.' % (name, str(device_id))
+def send_sms(device_id, name, probability):
+    appid = ''
+    apikey = ''
+    sender = ''
+    receivers = []
+    device_text = u'%s기기' % (str(device_id))
+    if int(device_id) is 999:
+        device_text = u'Web'
+    elif int(device_id) is 1010:
+        device_text = u'씨앗방'
+    elif int(device_id) is 1011:
+        device_text = u'폴리스캠'
+    elif int(device_id) is 1:
+        devicetext = u'스마트폰'
+
+    content = u'[Oldboy] "%s"(이)가 "%s"에서 발견되었습니다. 유사도 %s' % (name, device_text, str(round(probability, 1)))
 
     url = 'https://api.bluehouselab.com/smscenter/v1.0/sendsms'
     params = {
