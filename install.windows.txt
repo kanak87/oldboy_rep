@@ -1,0 +1,9 @@
+#pip install -r https://raw.githubusercontent.com/Lasagne/Lasagne/master/requirements.txt
+#pip install https://github.com/Lasagne/Lasagne/archive/master.zip
+
+pip install -r https://raw.githubusercontent.com/dnouri/nolearn/master/requirements.txt
+pip install git+https://github.com/dnouri/nolearn.git@master#egg=nolearn==0.7.git
+
+# http://docs.opencv.org/master/d5/de5/tutorial_py_setup_in_windows.html#gsc.tab=0
+
+# https://www.kaggle.com/c/facial-keypoints-detection/data
